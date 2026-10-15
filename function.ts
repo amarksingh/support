@@ -326,6 +326,10 @@ exports.base_path = function () {
 
 exports.implement = function (base, ...mixins) {
 	let aggregate = class __Aggregate extends base {
+		/**
+		 * Create a new instance.
+		 * @param {*} args
+		 */
 		constructor(...args) {
 			super(...args)
 			mixins.forEach((mixin) => {

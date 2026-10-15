@@ -1,4 +1,11 @@
+/**
+ * Class MixException.
+ */
 class MixException {
+    /**
+     * Create a new instance.
+     * @param {*} message
+     */
     constructor(message) {
         this.name = this.constructor.name;
         this.statusCode = 500;

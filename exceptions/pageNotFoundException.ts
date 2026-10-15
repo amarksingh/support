@@ -1,5 +1,12 @@
 const PageNotFoundExceptionContract = require('@ostro/contracts/http/pageNotFoundException')
+/**
+ * Class PageNotFoundException.
+ */
 class PageNotFoundException extends PageNotFoundExceptionContract {
+    /**
+     * Create a new instance.
+     * @param {*} error
+     */
     constructor(error) {
         super();
         this.name = this.constructor.name;

@@ -1,7 +1,16 @@
+/**
+ * flatten handler.
+ * @param {*} arr
+ * @returns {any}
+ */
 function flatten(arr) {
     return Array.isArray(arr) ? arr.flat(Infinity) : [arr];
 }
 
+/**
+ * compose handler.
+ * @returns {any}
+ */
 function compose() {
     var handlers = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -12,6 +21,10 @@ function compose() {
 }
 exports.compose = compose;
 
+/**
+ * errors handler.
+ * @returns {any}
+ */
 function errors() {
     var handlers = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -21,6 +34,11 @@ function errors() {
 }
 exports.errors = errors;
 
+/**
+ * generate handler.
+ * @param {*} handlers
+ * @returns {any}
+ */
 function generate(handlers) {
     var stack = flatten(handlers);
     for (var _i = 0, stack_1 = stack; _i < stack_1.length; _i++) {
@@ -32,12 +50,23 @@ function generate(handlers) {
     return function middleware(err, req, res, done) {
         var index = -1;
 
+        /**
+         * dispatch handler.
+         * @param {*} pos
+         * @param {*} err
+         * @returns {any}
+         */
         function dispatch(pos, err) {
             var handler = stack[pos];
             index = pos;
             if (index === stack.length)
                 return done(err);
 
+            /**
+             * next handler.
+             * @param {*} err
+             * @returns {any}
+             */
             function next(err) {
                 if (pos < index) {
                     throw new TypeError('`next()` called multiple times');

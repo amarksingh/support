@@ -6,10 +6,21 @@ var uncountables = {};
 var irregularPlurals = {};
 var irregularSingles = {};
 
+/**
+ * sanitizeRule handler.
+ * @param {*} rule
+ * @returns {any}
+ */
 function sanitizeRule(rule) {
     return typeof rule === 'string' ? new RegExp('^' + rule + '$', 'i') : rule;
 }
 
+/**
+ * restoreCase handler.
+ * @param {*} word
+ * @param {*} token
+ * @returns {any}
+ */
 function restoreCase(word, token) {
     if (word === token) return token;
     if (word === word.toLowerCase()) return token.toLowerCase();
@@ -18,6 +29,12 @@ function restoreCase(word, token) {
     return token.toLowerCase();
 }
 
+/**
+ * replaceWordRule handler.
+ * @param {*} word
+ * @param {*} rule
+ * @returns {any}
+ */
 function replaceWordRule(word, rule) {
     return word.replace(rule[0], (match, index, ...args) => {
         var res = rule[1].replace(/\$(\d{1,2})/g, (m, i) => args[i] || '');
@@ -25,6 +42,13 @@ function replaceWordRule(word, rule) {
     });
 }
 
+/**
+ * sanitizeWord handler.
+ * @param {*} token
+ * @param {*} word
+ * @param {*} rules
+ * @returns {any}
+ */
 function sanitizeWord(token, word, rules) {
     if (!token.length || lodash.has(uncountables, token)) return word;
     for (let i = rules.length - 1; i >= 0; i--) {
@@ -33,6 +57,13 @@ function sanitizeWord(token, word, rules) {
     return word;
 }
 
+/**
+ * replaceWord handler.
+ * @param {*} replaceMap
+ * @param {*} keepMap
+ * @param {*} rules
+ * @returns {any}
+ */
 function replaceWord(replaceMap, keepMap, rules) {
     return function (word) {
         var token = String(word).toLowerCase();
@@ -42,6 +73,11 @@ function replaceWord(replaceMap, keepMap, rules) {
     };
 }
 
+/**
+ * addUncountableRule handler.
+ * @param {*} word
+ * @returns {any}
+ */
 function addUncountableRule(word) {
     if (typeof word === 'string') {
         uncountables[word.toLowerCase()] = true;
@@ -51,6 +87,12 @@ function addUncountableRule(word) {
     }
 }
 
+/**
+ * addIrregularRule handler.
+ * @param {*} single
+ * @param {*} plural
+ * @returns {any}
+ */
 function addIrregularRule(single, plural) {
     plural = plural.toLowerCase();
     single = single.toLowerCase();
@@ -188,6 +230,13 @@ singularRules = [
 const getPlural = replaceWord(irregularSingles, irregularPlurals, pluralRules);
 const getSingular = replaceWord(irregularPlurals, irregularSingles, singularRules);
 
+/**
+ * plural handler.
+ * @param {*} string
+ * @param {*} count
+ * @param {*} inclusive
+ * @returns {any}
+ */
 function plural(string = '', count, inclusive) {
     if (typeof count === 'number') {
         var pluralized = count === 1 ? getSingular(string) : getPlural(string);
@@ -196,6 +245,11 @@ function plural(string = '', count, inclusive) {
     return getPlural(string);
 }
 
+/**
+ * singular handler.
+ * @param {*} string
+ * @returns {any}
+ */
 function singular(string = '') {
     return getSingular(string);
 }

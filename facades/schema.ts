@@ -1,9 +1,18 @@
 const Facade = require('./facade')
 const { Macroable } = require('../macro')
+/**
+ * Class Schema.
+ */
 class Schema extends Facade {
 
     static $cached = false;
 
+    /**
+     * connection method.
+     * @static
+     * @param {*} $name
+     * @returns {any}
+     */
     static connection($name) {
         return this.$app['db'].connection($name).getSchemaBuilder();
     }

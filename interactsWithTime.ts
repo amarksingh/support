@@ -1,7 +1,15 @@
 
 const DateTime = require('./dateTime');;
+/**
+ * Class InteractsWithTime.
+ */
 class InteractsWithTime {
 
+    /**
+     * secondsUntil method.
+     * @param {*} $delay
+     * @returns {any}
+     */
     secondsUntil($delay) {
         $delay = this.parseDateInterval($delay);
 
@@ -10,6 +18,11 @@ class InteractsWithTime {
             : parseInt($delay);
     }
 
+    /**
+     * availableAt method.
+     * @param {*} $delay
+     * @returns {any}
+     */
     availableAt($delay = 0) {
         $delay = this.parseDateInterval($delay);
 
@@ -18,6 +31,11 @@ class InteractsWithTime {
             : DateTime.now().addSeconds($delay).getTimestamp();
     }
 
+    /**
+     * parseDateInterval method.
+     * @param {*} $delay
+     * @returns {any}
+     */
     parseDateInterval($delay) {
         if ($delay instanceof DateTime) {
             $delay = DateTime.now().add($delay);
@@ -26,6 +44,10 @@ class InteractsWithTime {
         return $delay;
     }
 
+    /**
+     * currentTime method.
+     * @returns {any}
+     */
     currentTime() {
         return DateTime.now().getTimestamp();
     }

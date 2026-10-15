@@ -108,6 +108,11 @@ Object.defineProperties(ProxyHandler, {
 
 })
 
+/**
+ * Macroable handler.
+ * @param {*} clazz
+ * @returns {any}
+ */
 function Macroable(clazz) {
 
     clazz = clazz || this
@@ -130,6 +135,11 @@ Macroable.implement = function(clazz, ...clazzs) {
     return implement(Macroable(clazz), ...clazzs)
 }
 
+/**
+ * macro handler.
+ * @param {*} clazz
+ * @returns {any}
+ */
 function macro(clazz) {
     Object.defineProperty(clazz, '$_macros', {
         get: function() {
@@ -165,6 +175,10 @@ function macro(clazz) {
 
     clazz.getter = function(name, callback, singleton = false) {
         const wrappedCallback = singleton ?
+            /**
+             * wrappedCallback handler.
+             * @returns {any}
+             */
             function wrappedCallback() {
                 const value = callback.bind(this)();
                 Object.defineProperty(this, name, { value, configurable: true });

@@ -1,4 +1,11 @@
+/**
+ * Class LogicException.
+ */
 class LogicException extends Error {
+    /**
+     * Create a new instance.
+     * @param {*} message
+     */
     constructor(message) {
         super();
         this.name = this.constructor.name;

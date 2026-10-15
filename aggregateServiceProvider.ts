@@ -1,6 +1,9 @@
 const ServiceProvider = require('./serviceProvider')
 const kProvders = Symbol('providers')
 const kInstances = Symbol('instances')
+/**
+ * Class AggregateServiceProvider.
+ */
 class AggregateServiceProvider extends ServiceProvider
 {
 

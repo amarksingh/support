@@ -3,6 +3,9 @@ const RuntimeException = require('../exceptions/runtimeException');
 const { isset } = require('../function');
 const { ProxyHandler } = require('../macro');
 
+/**
+ * Class Facade.
+ */
 class Facade {
 
     static $app = null;
@@ -11,6 +14,12 @@ class Facade {
 
     static $cached = true;
 
+    /**
+     * resolved method.
+     * @static
+     * @param {*} $callback
+     * @returns {any}
+     */
     static resolved($callback) {
         let $accessor = this.getFacadeAccessor();
 
@@ -23,6 +32,12 @@ class Facade {
         });
     }
 
+    /**
+     * swap method.
+     * @static
+     * @param {*} $instance
+     * @returns {any}
+     */
     static swap($instance) {
         this.$resolvedInstance[this.getFacadeAccessor()] = $instance;
 
@@ -31,14 +46,30 @@ class Facade {
         }
     }
 
+    /**
+     * getFacadeRoot method.
+     * @static
+     * @returns {any}
+     */
     static getFacadeRoot() {
         return this.resolveFacadeInstance(this.getFacadeAccessor());
     }
 
+    /**
+     * getFacadeAccessor method.
+     * @static
+     * @returns {any}
+     */
     static getFacadeAccessor() {
         throw new RuntimeException('Facade does not implement getFacadeAccessor method.');
     }
 
+    /**
+     * resolveFacadeInstance method.
+     * @static
+     * @param {*} $name
+     * @returns {any}
+     */
     static resolveFacadeInstance($name) {
         if (typeof $name == 'object') {
             return $name;
@@ -56,26 +87,62 @@ class Facade {
         }
     }
 
+    /**
+     * clearResolvedInstance method.
+     * @static
+     * @param {*} $name
+     * @returns {any}
+     */
     static clearResolvedInstance($name) {
         delete this.$resolvedInstance[$name];
     }
 
+    /**
+     * clearResolvedInstances method.
+     * @static
+     * @returns {any}
+     */
     static clearResolvedInstances() {
         this.$resolvedInstance = {};
     }
 
+    /**
+     * getFacadeApplication method.
+     * @static
+     * @returns {any}
+     */
     static getFacadeApplication() {
         return this.$app;
     }
 
+    /**
+     * setFacadeApplication method.
+     * @static
+     * @param {*} $app
+     * @returns {any}
+     */
     static setFacadeApplication($app) {
         this.$app = $app;
     }
 
+    /**
+     * _makeProxy method.
+     * @static
+     * @param {*} $instance
+     * @param {*} $method
+     * @returns {any}
+     */
     static _makeProxy($instance, $method) {
         return ProxyHandler.make($instance, $method);
     }
 
+    /**
+     * __get method.
+     * @static
+     * @param {*} $target
+     * @param {*} $method
+     * @returns {any}
+     */
     static __get($target, $method) {
         let $instance = $target.getFacadeRoot();
 

@@ -1,5 +1,13 @@
 const HttpExceptionContract = require('@ostro/contracts/http/httpException')
+/**
+ * Class HttpException.
+ */
 class HttpException extends HttpExceptionContract {
+    /**
+     * Create a new instance.
+     * @param {*} errors
+     * @param {*} status
+     */
     constructor(errors,status) {
         super();
         this.name = this.constructor.name;

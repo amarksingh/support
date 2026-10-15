@@ -1,5 +1,12 @@
 const RuntimeExceptionContract = require('@ostro/contracts/exception/runtimeException')
+/**
+ * Class RuntimeException.
+ */
 class RuntimeException extends RuntimeExceptionContract {
+    /**
+     * Create a new instance.
+     * @param {*} message
+     */
     constructor(message) {
         super();
         this.name = this.constructor.name;

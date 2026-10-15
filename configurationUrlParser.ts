@@ -1,7 +1,13 @@
 const url = require('url');
 const querystring = require('querystring');
 
+/**
+ * Class ConfigurationUrlParser.
+ */
 class ConfigurationUrlParser {
+    /**
+     * Create a new instance.
+     */
     constructor() {
 
         this.$driverAliases = {
@@ -15,6 +21,11 @@ class ConfigurationUrlParser {
         };
     }
 
+    /**
+     * parseConfiguration method.
+     * @param {*} config
+     * @returns {any}
+     */
     parseConfiguration(config) {
         if (typeof config === 'string') {
             config = { url: config };
@@ -34,6 +45,11 @@ class ConfigurationUrlParser {
         };
     }
 
+    /**
+     * getPrimaryOptions method.
+     * @param {*} url
+     * @returns {any}
+     */
     getPrimaryOptions(url) {
         return {
             driver: this.getDriver(url),
@@ -46,6 +62,11 @@ class ConfigurationUrlParser {
     }
 
 
+    /**
+     * getDriver method.
+     * @param {*} url
+     * @returns {any}
+     */
     getDriver(url) {
         const alias = url.protocol && url.protocol.replace(':', '');
 
@@ -56,6 +77,11 @@ class ConfigurationUrlParser {
         return this.$driverAliases[alias] || alias;
     }
 
+    /**
+     * getDatabase method.
+     * @param {*} url
+     * @returns {any}
+     */
     getDatabase(url) {
         let path = url.pathname || '';
         if (path.startsWith('/')) {
@@ -64,6 +90,11 @@ class ConfigurationUrlParser {
         return path !== '' ? path : null;
     }
 
+    /**
+     * getQueryOptions method.
+     * @param {*} url
+     * @returns {any}
+     */
     getQueryOptions(url) {
         const queryString = url.search ? url.search.replace(/^\?/, '') : (url.query || '');
 
@@ -79,6 +110,11 @@ class ConfigurationUrlParser {
         return result;
     }
 
+    /**
+     * parseUrl method.
+     * @param {*} url
+     * @returns {any}
+     */
     parseUrl(url) {
         url = url.replace(/^(sqlite3?):\/\//, '$1://null/');
 
@@ -91,6 +127,11 @@ class ConfigurationUrlParser {
         return parsedUrl;
     }
 
+    /**
+     * parseStringsToNativeTypes method.
+     * @param {*} value
+     * @returns {any}
+     */
     parseStringsToNativeTypes(value) {
         if (Array.isArray(value)) {
             return value.map(v => this.parseStringsToNativeTypes(v));
@@ -111,6 +152,12 @@ class ConfigurationUrlParser {
         return this.$driverAliases;
     }
 
+    /**
+     * addDriverAlias method.
+     * @param {*} alias
+     * @param {*} driver
+     * @returns {any}
+     */
     addDriverAlias(alias, driver) {
         this.$driverAliases[alias] = driver;
     }

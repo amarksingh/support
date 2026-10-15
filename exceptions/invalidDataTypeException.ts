@@ -1,5 +1,12 @@
 const InvalidClassExceptionContract = require('@ostro/contracts/exception/invalidDataTypeException')
+/**
+ * Class InvalidClassException.
+ */
 class InvalidClassException extends InvalidClassExceptionContract {
+    /**
+     * Create a new instance.
+     * @param {*} message
+     */
     constructor(message) {
         super();
         this.name = this.constructor.name;

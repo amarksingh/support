@@ -1,4 +1,11 @@
+/**
+ * Class InvalidFacadeAccessor.
+ */
 class InvalidFacadeAccessor {
+    /**
+     * Create a new instance.
+     * @param {*} facadeName
+     */
     constructor(facadeName) {
         this.name = this.constructor.name;
         this.message = `Given facade Accessor [{${facadeName}}] not available`;

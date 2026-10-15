@@ -1,4 +1,11 @@
+/**
+ * Class UnauthenticatedException.
+ */
 class UnauthenticatedException {
+    /**
+     * Create a new instance.
+     * @param {*} message
+     */
     constructor(message) {
         this.name = this.constructor.name;
         this.statusCode = 401;
