@@ -26,7 +26,7 @@ class Facade {
     static swap($instance) {
         this.$resolvedInstance[this.getFacadeAccessor()] = $instance;
 
-        if (isset(this.$app) && typeof this.$app.instance === 'function') {
+        if (this.$app && typeof this.$app.instance === 'function') {
             this.$app.instance(this.getFacadeAccessor(), $instance);
         }
     }
@@ -72,7 +72,7 @@ class Facade {
         this.$app = $app;
     }
 
-    static make($instance, $method) {
+    static _makeProxy($instance, $method) {
         return ProxyHandler.make($instance, $method);
     }
 
@@ -82,7 +82,7 @@ class Facade {
         if (!$instance) {
             throw new InvalidFacadeAccessor($target.getFacadeAccessor());
         }
-        return this.make($instance, $method);
+        return Facade._makeProxy($instance, $method);
     }
 
 }
