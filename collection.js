@@ -89,7 +89,7 @@ class Collection extends Macroable.extend(CollectionInterface) {
 
 
 	concat(arr) {
-		return this[kUpdateData](super.concat(arr))
+		return this[kUpdateData](Array.isArray(this.$items) ? this.$items.concat(arr) : lodash.concat(this.$items, arr))
 	}
 
 	contains(clause) {
@@ -138,7 +138,7 @@ class Collection extends Macroable.extend(CollectionInterface) {
 		return lodash[(clause) ? 'maxBy' : 'max'](this.$items, clause)
 	}
 
-	min() {
+	min(clause) {
 		return lodash[(clause) ? 'minBy' : 'min'](this.$items, clause)
 	}
 

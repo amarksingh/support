@@ -6,7 +6,7 @@ class InteractsWithTime {
         $delay = this.parseDateInterval($delay);
 
         return $delay instanceof DateTime
-            ? max(0, $delay.getTimestamp() - this.currentTime())
+            ? Math.max(0, $delay.getTimestamp() - this.currentTime())
             : parseInt($delay);
     }
 
@@ -14,7 +14,7 @@ class InteractsWithTime {
         $delay = this.parseDateInterval($delay);
 
         return $delay instanceof DateTime
-            ? $delay.getTimeStamp()
+            ? $delay.getTimestamp()
             : DateTime.now().addSeconds($delay).getTimestamp();
     }
 

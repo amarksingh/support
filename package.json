@@ -3,7 +3,7 @@
   "version": "1.3.0",
   "description": "Support for OstroJS",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx c8 npx jest"
   },
   "dependencies": {
     "@ostro/contracts": "^1.0.2",

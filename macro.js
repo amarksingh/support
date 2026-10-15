@@ -38,10 +38,10 @@ Object.defineProperties(ProxyHandler, {
                 return target[key];
             }
 
-            if (typeof key === 'symbol' || key in target || Reflect.has(target, key) || target[key] !== undefined) {
+            if (typeof key === 'symbol' || Reflect.has(target, key) || target[key] !== undefined) {
                 let val = target[key];
                 if (typeof val === 'function') {
-                    return val.bind(receiver || target);
+                    return val.bind(receiver);
                 }
                 return val;
             } else {
@@ -55,7 +55,7 @@ Object.defineProperties(ProxyHandler, {
                         let targetObj = target;
                         let targetReceiver = receiver;
                         return function(...args) {
-                            let instance = targetReceiver || targetObj;
+                            let instance = targetReceiver;
                             let callFn = Reflect.get(targetObj, '__call', targetObj);
                             return callFn.call(instance, instance, key, args);
                         };
@@ -198,3 +198,4 @@ function macro(clazz) {
 }
 
 exports.Macroable = Macroable
+exports.ProxyHandler = ProxyHandler

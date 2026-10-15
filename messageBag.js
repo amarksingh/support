@@ -1,4 +1,4 @@
-const MessageBagContracts = require('@ostro/support/messageBag')
+const MessageBagContracts = require('@ostro/contracts/support/messageBag')
 const { get, set } = require('lodash')
 const kMessage = Symbol('message')
 class MessageBag extends MessageBagContracts {

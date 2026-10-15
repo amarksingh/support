@@ -27,6 +27,7 @@ exports.unique = function (key) {
 exports.diff = function (arr) {
     return _.difference(this, arr)
 }
+exports.difference = exports.diff;
 
 exports.wrap = function (value) {
     if (value === null || value === undefined) {

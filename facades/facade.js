@@ -1,5 +1,7 @@
 const InvalidFacadeAccessor = require('./exceptions/invalidFacadeAccessor');
 const RuntimeException = require('../exceptions/runtimeException');
+const { isset } = require('../function');
+const { ProxyHandler } = require('../macro');
 
 class Facade {
 
@@ -24,7 +26,7 @@ class Facade {
     static swap($instance) {
         this.$resolvedInstance[this.getFacadeAccessor()] = $instance;
 
-        if (isset(this.$app)) {
+        if (isset(this.$app) && typeof this.$app.instance === 'function') {
             this.$app.instance(this.getFacadeAccessor(), $instance);
         }
     }
@@ -46,7 +48,7 @@ class Facade {
             if (this.$cached) {
                 return this.$resolvedInstance[$name];
             }
-            this.$app[$name]
+            return this.$app[$name];
         }
 
         if (this.$app) {
@@ -59,7 +61,7 @@ class Facade {
     }
 
     static clearResolvedInstances() {
-        this.$resolvedInstance = [];
+        this.$resolvedInstance = {};
     }
 
     static getFacadeApplication() {
@@ -68,6 +70,10 @@ class Facade {
 
     static setFacadeApplication($app) {
         this.$app = $app;
+    }
+
+    static make($instance, $method) {
+        return ProxyHandler.make($instance, $method);
     }
 
     static __get($target, $method) {

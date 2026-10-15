@@ -1,4 +1,6 @@
-const { flatten } = require("array-flatten");
+function flatten(arr) {
+    return Array.isArray(arr) ? arr.flat(Infinity) : [arr];
+}
 
 function compose() {
     var handlers = [];

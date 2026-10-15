@@ -1,8 +1,8 @@
 const RedirectResponse = require('@ostro/http/redirectResponse')
-const { Macroable } = require('@ostro/support/macro')
+const { Macroable } = require('./macro')
 class Redirect {
     static __get(target, method) {
-        return this.call(new RedirectResponse(), method)
+        return this.make(new RedirectResponse(), method)
     }
 }
 module.exports = Macroable(Redirect)

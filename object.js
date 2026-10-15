@@ -24,7 +24,7 @@ Object.except = function(obj, keys) {
 Object.flip = function flip(obj) {
     return _.transform(obj, function(res, val, key) {
         if (_.isPlainObject(val)) {
-            res[key] = deepInvert(val);
+            res[key] = Object.flip(val);
         } else {
             res[val] = key;
         }

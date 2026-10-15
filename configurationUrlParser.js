@@ -38,10 +38,10 @@ class ConfigurationUrlParser {
         return {
             driver: this.getDriver(url),
             database: this.getDatabase(url),
-            host: url.host || null,
+            host: url.hostname || url.host || null,
             port: url.port || null,
-            username: url.user || null,
-            password: url.pass || null,
+            username: url.username || url.user || null,
+            password: url.password || url.pass || null,
         };
     }
 
@@ -57,21 +57,26 @@ class ConfigurationUrlParser {
     }
 
     getDatabase(url) {
-        const path = url.pathname || '';
-
-        return path !== '/' ? path.slice(1) : null;
+        let path = url.pathname || '';
+        if (path.startsWith('/')) {
+            path = path.slice(1);
+        }
+        return path !== '' ? path : null;
     }
 
     getQueryOptions(url) {
-        const queryString = url.query || '';
+        const queryString = url.search ? url.search.replace(/^\?/, '') : (url.query || '');
 
         if (!queryString) {
             return {};
         }
 
         const query = querystring.parse(queryString);
-
-        return this.parseStringsToNativeTypes(query);
+        const result = {};
+        for (let key in query) {
+            result[key] = this.parseStringsToNativeTypes(query[key]);
+        }
+        return result;
     }
 
     parseUrl(url) {

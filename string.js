@@ -73,7 +73,7 @@ exports.replace = (...arg) => lodash.replace(...arg);
 
 exports.replaceFirst = function replaceFirst(string = '', pattern = '', replacement) {
     var pStr = typeof pattern === 'string' ? pattern.replace(/\\/ig, '\\\\') : pattern;
-    return exports.replace(string, new RegExp(pStr, "g"), replacement);
+    return exports.replace(string, new RegExp(pStr), replacement);
 }
 
 exports.replaceAll = function replaceAll(string = '', pattern = '', replacement) {

@@ -1,5 +1,6 @@
 const { DateTime: LuxonDateTime } = require("luxon");
-const InvalidArgumentException = require('@ostro/support/exceptions/invalidArgumentException');
+const InvalidArgumentException = require('./exceptions/invalidArgumentException');
+const { is_callable, is_object, is_string } = require('./function');
 class DateTime extends Date {
     static DEFAULT_CLASS_NAME = LuxonDateTime;
 
@@ -57,7 +58,8 @@ class DateTime extends Date {
     }
 
     createFromTime($hour = 0, $minute = 0, $second = 0, $tz = null) {
-        return this.constructor.DEFAULT_CLASS_NAME.fromFormat($time, $format, { setZone: $tz || this.constructor.getTimeZone() })
+        let now = this.constructor.DEFAULT_CLASS_NAME.utc().setZone($tz || this.constructor.getTimeZone());
+        return now.set({ hour: $hour, minute: $minute, second: $second, millisecond: 0 });
     }
 
     getTime() {
@@ -130,7 +132,7 @@ class DateTime extends Date {
     }
 
     static use($handler) {
-        if (is_callable($handler) && is_object($handler)) {
+        if (is_callable($handler)) {
             return this.useCallable($handler);
         } else if (is_string($handler)) {
             return this.useClass($handler);
