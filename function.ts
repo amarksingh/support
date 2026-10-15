@@ -356,7 +356,7 @@ exports.implement = function (base, ...mixins) {
 		copyProps(aggregate.prototype, mixin.prototype)
 		copyProps(aggregate, mixin)
 	})
-	aggregate.name = base.name
+	Object.defineProperty(aggregate, 'name', { value: base.name, configurable: true })
 	return aggregate
 }
 
