@@ -14,7 +14,7 @@ class Manager extends Macroable {
      * Create a new instance.
      * @param {*} application
      */
-    constructor(application) {
+    constructor(application: any) {
         super()
         let $container = application || (typeof app === 'function' ? app() : new MockContainer());
         Object.defineProperties(this, {
@@ -42,7 +42,7 @@ class Manager extends Macroable {
      * @param {*} $driver
      * @returns {any}
      */
-    driver($driver = null) {
+    driver($driver: any = null) {
         $driver = $driver || this.getDefaultDriver();
 
         if (is_null($driver)) {
@@ -61,7 +61,7 @@ class Manager extends Macroable {
      * @param {*} name
      * @returns {any}
      */
-    getDriver(name) {
+    getDriver(name: string) {
         let $config = this.getDriverConfig(name);
         return this.resolve(name, $config);
     }
@@ -72,7 +72,7 @@ class Manager extends Macroable {
      * @param {*} $config
      * @returns {any}
      */
-    resolve($name, $config = {}) {
+    resolve($name: string, $config: Record<string, any> = {}) {
 
         if (isset(this.$customCreators[$config['driver']])) {
             return this.callCustomCreator($config, $name);
@@ -93,7 +93,7 @@ class Manager extends Macroable {
      * @param {*} $name
      * @returns {any}
      */
-    callCustomCreator($config, $name) {
+    callCustomCreator($config: Record<string, any>, $name: string) {
         return this.$customCreators[$config['driver']].call(this, this.$container, $name, $config);
     }
 
@@ -103,7 +103,7 @@ class Manager extends Macroable {
      * @param {*} $callback
      * @returns {any}
      */
-    extend($driver, $callback) {
+    extend($driver: any, $callback: Function) {
         this.$customCreators[$driver] = $callback;
         return this;
     }
@@ -129,7 +129,7 @@ class Manager extends Macroable {
      * @param {*} $container
      * @returns {any}
      */
-    setContainer($container) {
+    setContainer($container: any) {
         this.$container = $container;
         return this;
     }
@@ -148,7 +148,7 @@ class Manager extends Macroable {
      * @param {*} name
      * @returns {any}
      */
-    setDefaultDriver(name) {
+    setDefaultDriver(name: string) {
         lodash.set(this.$config, `${this.$type}.default`, name)
     }
 
@@ -166,7 +166,7 @@ class Manager extends Macroable {
      * @param {*} defaultValue
      * @returns {any}
      */
-    getConfig(name, defaultValue) {
+    getConfig(name: string, defaultValue: any) {
         return lodash.get(this.$config, `${this.$type}.${name}`, defaultValue)
     }
 
@@ -175,7 +175,7 @@ class Manager extends Macroable {
      * @param {*} name
      * @returns {any}
      */
-    getDriverConfig(name) {
+    getDriverConfig(name: string) {
         return lodash.get(this.$config, `${this.$type}.drivers.${name}`);
     }
 
@@ -186,7 +186,7 @@ class Manager extends Macroable {
      * @param {*} $parameters
      * @returns {any}
      */
-    __call(target, $method, $parameters) {
+    __call(target: Record<string, any>, $method: string, $parameters: any[]) {
         return target.driver()[$method](...$parameters);
     }
 }

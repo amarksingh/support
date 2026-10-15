@@ -31,7 +31,7 @@ class DateTime extends Facade {
      * @param {*} $name
      * @returns {any}
      */
-    static resolveFacadeInstance($name) {
+    static resolveFacadeInstance($name: string) {
         if (!isset(this.$resolvedInstance[$name]) && !isset(this.$app, this.$app[$name])) {
             let $class = this.DEFAULT_FACADE;
             this.swap(new $class);

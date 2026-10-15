@@ -52,7 +52,7 @@ class DateTime extends Date {
      * Create a new instance.
      * @param {*} date
      */
-    constructor(date) {
+    constructor(date: any) {
 
         super(...arguments);
 
@@ -76,7 +76,7 @@ class DateTime extends Date {
      * @param {*} $tz
      * @returns {any}
      */
-    create($year = 0, $month = 0, $day = 0, $hour = 0, $minute = 0, $second = 0, $tz = null) {
+    create($year: number = 0, $month: number = 0, $day: number = 0, $hour: number = 0, $minute: number = 0, $second: number = 0, $tz: any = null) {
         return this.constructor.DEFAULT_CLASS_NAME.utc($year, $month, $day, $hour, $minute, $second).setZone($tz || this.constructor.getTimeZone())
     }
 
@@ -88,7 +88,7 @@ class DateTime extends Date {
      * @param {*} $tz
      * @returns {any}
      */
-    createFromDate($year = null, $month = null, $day = null, $tz = null) {
+    createFromDate($year: any = null, $month: any = null, $day: any = null, $tz: any = null) {
         return this.constructor.DEFAULT_CLASS_NAME.utc($year, $month, $day, 0, 0, 0).setZone($tz || this.constructor.getTimeZone())
     }
 
@@ -99,7 +99,7 @@ class DateTime extends Date {
      * @param {*} $tz
      * @returns {any}
      */
-    createFromFormat($format, $time, $tz = null) {
+    createFromFormat($format: any, $time: any, $tz: any = null) {
         return this.constructor.DEFAULT_CLASS_NAME.fromFormat($time, $format, { setZone: $tz || this.constructor.getTimeZone() })
     }
 
@@ -111,7 +111,7 @@ class DateTime extends Date {
      * @param {*} $tz
      * @returns {any}
      */
-    createFromTime($hour = 0, $minute = 0, $second = 0, $tz = null) {
+    createFromTime($hour: number = 0, $minute: number = 0, $second: number = 0, $tz: any = null) {
         let now = this.constructor.DEFAULT_CLASS_NAME.utc().setZone($tz || this.constructor.getTimeZone());
         return now.set({ hour: $hour, minute: $minute, second: $second, millisecond: 0 });
     }
@@ -147,7 +147,7 @@ class DateTime extends Date {
      * @param {*} $tz
      * @returns {any}
      */
-    now($tz = null) {
+    now($tz: any = null) {
         let date = this.constructor.DEFAULT_CLASS_NAME.utc().setZone(this.constructor.getTimeZone())
         if ($tz)
             date = date.setZone($tz);
@@ -159,7 +159,7 @@ class DateTime extends Date {
      * @param {*} date
      * @returns {any}
      */
-    add(date) {
+    add(date: any) {
         let diff = {};
         if (date instanceof this.constructor) {
             diff = date.DATE_TIME.diff(this.DATE_TIME);
@@ -176,7 +176,7 @@ class DateTime extends Date {
      * @param {*} obj
      * @returns {any}
      */
-    plus(obj) {
+    plus(obj: any) {
         const date = this.clone(this.DATE_TIME)
         return this.newDate(date.plus(obj));
     }
@@ -186,7 +186,7 @@ class DateTime extends Date {
      * @param {*} value
      * @returns {any}
      */
-    addSeconds(value) {
+    addSeconds(value: any) {
         return this.plus({ seconds: value });
     }
 
@@ -195,7 +195,7 @@ class DateTime extends Date {
      * @param {*} value
      * @returns {any}
      */
-    addMinutes(value) {
+    addMinutes(value: any) {
         return this.plus({ minutes: value });
     }
 
@@ -204,7 +204,7 @@ class DateTime extends Date {
      * @param {*} value
      * @returns {any}
      */
-    addHours(value) {
+    addHours(value: any) {
         return this.plus({ hours: value });
     }
 
@@ -213,7 +213,7 @@ class DateTime extends Date {
      * @param {*} value
      * @returns {any}
      */
-    addDays(value) {
+    addDays(value: any) {
         return this.plus({ days: value });
     }
 
@@ -222,7 +222,7 @@ class DateTime extends Date {
      * @param {*} value
      * @returns {any}
      */
-    addWeeks(value) {
+    addWeeks(value: any) {
         return this.plus({ weeks: value });
     }
 
@@ -231,7 +231,7 @@ class DateTime extends Date {
      * @param {*} value
      * @returns {any}
      */
-    addYears(value) {
+    addYears(value: any) {
         return this.plus({ years: value });
     }
 
@@ -240,7 +240,7 @@ class DateTime extends Date {
      * @param {*} format
      * @returns {any}
      */
-    format(format) {
+    format(format: any) {
         return this.DATE_TIME.toFormat(format).toString()
     }
 
@@ -258,7 +258,7 @@ class DateTime extends Date {
      * @param {*} $handler
      * @returns {any}
      */
-    static use($handler) {
+    static use($handler: Function) {
         if (is_callable($handler)) {
             return this.useCallable($handler);
         } else if (is_string($handler)) {
@@ -284,7 +284,7 @@ class DateTime extends Date {
      * @param {*} $callable
      * @returns {any}
      */
-    static useCallable($callable) {
+    static useCallable($callable: any) {
         this.$callable = $callable;
         this.$factory = null;
         this.$dateClass = null;
@@ -296,7 +296,7 @@ class DateTime extends Date {
      * @param {*} $dateClass
      * @returns {any}
      */
-    static useClass($dateClass) {
+    static useClass($dateClass: any) {
         this.$dateClass = $dateClass;
         this.$factory = null;
         this.$callable = null;
@@ -308,7 +308,7 @@ class DateTime extends Date {
      * @param {*} $factory
      * @returns {any}
      */
-    static useFactory($factory) {
+    static useFactory($factory: any) {
         this.$factory = $factory;
         this.$callable = null;
         this.$dateClass = null;
@@ -319,7 +319,7 @@ class DateTime extends Date {
      * @param {*} date
      * @returns {any}
      */
-    clone(date) {
+    clone(date: any) {
         return new this.constructor.DEFAULT_CLASS_NAME(date)
     }
 
@@ -328,7 +328,7 @@ class DateTime extends Date {
      * @param {*} date
      * @returns {any}
      */
-    newDate(date) {
+    newDate(date: any) {
         return new this.constructor(date)
     }
 

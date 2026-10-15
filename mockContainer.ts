@@ -9,7 +9,7 @@ class MockContainer {
      * @param {*} abstract
      * @returns {any}
      */
-    make(abstract) {
+    make(abstract: any) {
         if (typeof this.bindings[abstract] === 'function') {
             return this.bindings[abstract](this);
         }
@@ -22,7 +22,7 @@ class MockContainer {
      * @param {*} concrete
      * @returns {any}
      */
-    bind(abstract, concrete) {
+    bind(abstract: any, concrete: any) {
         this.bindings[abstract] = concrete;
     }
 }

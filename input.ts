@@ -9,7 +9,7 @@ class Input extends InputContracts {
      * Create a new instance.
      * @param {*} objects
      */
-    constructor(objects) {
+    constructor(objects: any) {
         super()
         this[kInput] = objects
     }
@@ -19,7 +19,7 @@ class Input extends InputContracts {
      * @param {*} defaultValue
      * @returns {any}
      */
-    get(key, defaultValue = null) {
+    get(key: string, defaultValue: any = null) {
         return get(this[kInput], key) || defaultValue;
     }
 }

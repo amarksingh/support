@@ -9,7 +9,7 @@ class ErrorBag extends ErrorBagcontract {
      * Create a new instance.
      * @param {*} objects
      */
-    constructor(objects) {
+    constructor(objects: any) {
         super()
         this[kErrors] = objects
     }
@@ -19,7 +19,7 @@ class ErrorBag extends ErrorBagcontract {
      * @param {*} value
      * @returns {any}
      */
-    add(key, value) {
+    add(key: string, value: any) {
         return set(this[kErrors], key, value);
     }
     /**
@@ -28,7 +28,7 @@ class ErrorBag extends ErrorBagcontract {
      * @param {*} defaultValue
      * @returns {any}
      */
-    get(key, defaultValue = null) {
+    get(key: string, defaultValue: any = null) {
         return get(this[kErrors], key) || defaultValue;
     }
     /**
@@ -37,7 +37,7 @@ class ErrorBag extends ErrorBagcontract {
      * @param {*} defaultValue
      * @returns {any}
      */
-    first(key, defaultValue = null) {
+    first(key: string, defaultValue: any = null) {
         let data = this.get(key)
         return (Array.isArray(data) ? data[0] : data) || defaultValue;
     }
@@ -46,7 +46,7 @@ class ErrorBag extends ErrorBagcontract {
      * @param {*} key
      * @returns {any}
      */
-    has(key) {
+    has(key: string) {
         return this.get(key) != undefined;
     }
 }

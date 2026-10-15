@@ -9,7 +9,7 @@ class Env {
      * @param {*} defaultValue
      * @returns {any}
      */
-    static get(key, defaultValue = null) {
+    static get(key: string, defaultValue: any = null) {
         return process.env[key] || defaultValue;
     }
     /**
@@ -19,7 +19,7 @@ class Env {
      * @param {*} value
      * @returns {any}
      */
-    static set(key, value) {
+    static set(key: string, value: any) {
         process.env[key] = value;
     }
 }

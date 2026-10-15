@@ -13,7 +13,7 @@ class Schema extends Facade {
      * @param {*} $name
      * @returns {any}
      */
-    static connection($name) {
+    static connection($name: string) {
         return this.$app['db'].connection($name).getSchemaBuilder();
     }
 

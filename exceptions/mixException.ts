@@ -6,7 +6,7 @@ class MixException {
      * Create a new instance.
      * @param {*} message
      */
-    constructor(message) {
+    constructor(message: string) {
         this.name = this.constructor.name;
         this.statusCode = 500;
         this.message = message;

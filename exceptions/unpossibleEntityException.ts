@@ -6,7 +6,7 @@ class UnpossibleEntityException {
      * Create a new instance.
      * @param {*} message
      */
-    constructor(message) {
+    constructor(message: string) {
         this.name = this.constructor.name;
         this.message = message || 'Unpossible Entity Exception';
         this.statusCode = 422;

@@ -20,7 +20,7 @@ class Facade {
      * @param {*} $callback
      * @returns {any}
      */
-    static resolved($callback) {
+    static resolved($callback: Function) {
         let $accessor = this.getFacadeAccessor();
 
         if (this.$app.resolved($accessor) === true) {
@@ -38,7 +38,7 @@ class Facade {
      * @param {*} $instance
      * @returns {any}
      */
-    static swap($instance) {
+    static swap($instance: any) {
         this.$resolvedInstance[this.getFacadeAccessor()] = $instance;
 
         if (this.$app && typeof this.$app.instance === 'function') {
@@ -70,7 +70,7 @@ class Facade {
      * @param {*} $name
      * @returns {any}
      */
-    static resolveFacadeInstance($name) {
+    static resolveFacadeInstance($name: string) {
         if (typeof $name == 'object') {
             return $name;
         }
@@ -93,7 +93,7 @@ class Facade {
      * @param {*} $name
      * @returns {any}
      */
-    static clearResolvedInstance($name) {
+    static clearResolvedInstance($name: string) {
         delete this.$resolvedInstance[$name];
     }
 
@@ -121,7 +121,7 @@ class Facade {
      * @param {*} $app
      * @returns {any}
      */
-    static setFacadeApplication($app) {
+    static setFacadeApplication($app: any) {
         this.$app = $app;
     }
 
@@ -132,7 +132,7 @@ class Facade {
      * @param {*} $method
      * @returns {any}
      */
-    static _makeProxy($instance, $method) {
+    static _makeProxy($instance: any, $method: string) {
         return ProxyHandler.make($instance, $method);
     }
 
@@ -143,7 +143,7 @@ class Facade {
      * @param {*} $method
      * @returns {any}
      */
-    static __get($target, $method) {
+    static __get($target: Record<string, any>, $method: string) {
         let $instance = $target.getFacadeRoot();
 
         if (!$instance) {

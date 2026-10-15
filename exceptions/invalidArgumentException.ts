@@ -7,7 +7,7 @@ class InvalidArgumentException extends InvalidArgumentExceptionContract {
      * Create a new instance.
      * @param {*} message
      */
-    constructor(message) {
+    constructor(message: string) {
         super();
         this.name = this.constructor.name;
         this.code = 'ERR_INVALID_ARG_VALUE';

@@ -26,7 +26,7 @@ class ConfigurationUrlParser {
      * @param {*} config
      * @returns {any}
      */
-    parseConfiguration(config) {
+    parseConfiguration(config: Record<string, any>) {
         if (typeof config === 'string') {
             config = { url: config };
         }
@@ -50,7 +50,7 @@ class ConfigurationUrlParser {
      * @param {*} url
      * @returns {any}
      */
-    getPrimaryOptions(url) {
+    getPrimaryOptions(url: string) {
         return {
             driver: this.getDriver(url),
             database: this.getDatabase(url),
@@ -67,7 +67,7 @@ class ConfigurationUrlParser {
      * @param {*} url
      * @returns {any}
      */
-    getDriver(url) {
+    getDriver(url: string) {
         const alias = url.protocol && url.protocol.replace(':', '');
 
         if (!alias) {
@@ -82,7 +82,7 @@ class ConfigurationUrlParser {
      * @param {*} url
      * @returns {any}
      */
-    getDatabase(url) {
+    getDatabase(url: string) {
         let path = url.pathname || '';
         if (path.startsWith('/')) {
             path = path.slice(1);
@@ -95,7 +95,7 @@ class ConfigurationUrlParser {
      * @param {*} url
      * @returns {any}
      */
-    getQueryOptions(url) {
+    getQueryOptions(url: string) {
         const queryString = url.search ? url.search.replace(/^\?/, '') : (url.query || '');
 
         if (!queryString) {
@@ -115,7 +115,7 @@ class ConfigurationUrlParser {
      * @param {*} url
      * @returns {any}
      */
-    parseUrl(url) {
+    parseUrl(url: string) {
         url = url.replace(/^(sqlite3?):\/\//, '$1://null/');
 
         const parsedUrl = new URL(url);
@@ -132,7 +132,7 @@ class ConfigurationUrlParser {
      * @param {*} value
      * @returns {any}
      */
-    parseStringsToNativeTypes(value) {
+    parseStringsToNativeTypes(value: any) {
         if (Array.isArray(value)) {
             return value.map(v => this.parseStringsToNativeTypes(v));
         }
@@ -158,7 +158,7 @@ class ConfigurationUrlParser {
      * @param {*} driver
      * @returns {any}
      */
-    addDriverAlias(alias, driver) {
+    addDriverAlias(alias: any, driver: any) {
         this.$driverAliases[alias] = driver;
     }
 }

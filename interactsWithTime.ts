@@ -10,7 +10,7 @@ class InteractsWithTime {
      * @param {*} $delay
      * @returns {any}
      */
-    secondsUntil($delay) {
+    secondsUntil($delay: any) {
         $delay = this.parseDateInterval($delay);
 
         return $delay instanceof DateTime
@@ -23,7 +23,7 @@ class InteractsWithTime {
      * @param {*} $delay
      * @returns {any}
      */
-    availableAt($delay = 0) {
+    availableAt($delay: number = 0) {
         $delay = this.parseDateInterval($delay);
 
         return $delay instanceof DateTime
@@ -36,7 +36,7 @@ class InteractsWithTime {
      * @param {*} $delay
      * @returns {any}
      */
-    parseDateInterval($delay) {
+    parseDateInterval($delay: any) {
         if ($delay instanceof DateTime) {
             $delay = DateTime.now().add($delay);
         }

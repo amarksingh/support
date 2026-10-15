@@ -8,7 +8,7 @@ class HttpException extends HttpExceptionContract {
      * @param {*} errors
      * @param {*} status
      */
-    constructor(errors,status) {
+    constructor(errors: any, status: boolean) {
         super();
         this.name = this.constructor.name;
         this.message = 'Error happend';

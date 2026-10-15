@@ -6,7 +6,7 @@ class ServiceProvider {
      * Create a new instance.
      * @param {*} $app
      */
-    constructor($app){
+    constructor($app: any) {
         this.$app = $app
     }
     /**
@@ -46,7 +46,7 @@ class ServiceProvider {
      * @param {*} $commands
      * @returns {any}
      */
-    commands($commands) {
+    commands($commands: any) {
         $commands = Array.isArray($commands) ? $commands : arguments
         if ($commands.length) {
             const Assistant = require('@ostro/console/application');

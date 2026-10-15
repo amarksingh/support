@@ -6,7 +6,7 @@ class InvalidFacadeAccessor {
      * Create a new instance.
      * @param {*} facadeName
      */
-    constructor(facadeName) {
+    constructor(facadeName: any) {
         this.name = this.constructor.name;
         this.message = `Given facade Accessor [{${facadeName}}] not available`;
         this.status = 500;
