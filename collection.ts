@@ -2,10 +2,15 @@ const lodash = require('lodash')
 const { Macroable } = require('./macro')
 const CollectionInterface = require('@ostro/contracts/collection/collect')
 const kUpdateData = Symbol('update')
+import type { ICollection } from '@ostro/contracts/collection/collect'
+
 /**
  * Class Collection.
  */
-class Collection extends Macroable.extend(CollectionInterface) {
+class Collection<T = any> extends Macroable.extend(CollectionInterface) implements ICollection<T> {
+	$items: T[];
+	length: number;
+
 	/**
 	 * Create a new instance.
 	 * @param {*} data
