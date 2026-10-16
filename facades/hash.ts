@@ -15,4 +15,4 @@ class Hash extends Facade {
         return 'hash';
     }
 }
-export default Macroable(Hash);
+export default Macroable(Hash) as typeof Hash & { [key: string]: any };

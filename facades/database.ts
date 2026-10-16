@@ -14,4 +14,4 @@ class Database extends Facade {
         return 'db';
     }
 }
-export default Macroable(Database);
+export default Macroable(Database) as typeof Database & { [key: string]: any };

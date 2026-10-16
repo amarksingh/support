@@ -13,7 +13,7 @@ class PageNotFoundException extends PageNotFoundExceptionContract {
      * Create a new instance.
      * @param error - The error details.
      */
-    constructor(error: any) {
+    constructor(error?: any) {
         super();
         this.name = this.constructor.name;
         this.message = 'Page Not Found Exception';

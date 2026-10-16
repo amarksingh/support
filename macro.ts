@@ -117,7 +117,7 @@ Object.defineProperties(ProxyHandler, {
 export interface MacroableConstructor {
     new (...args: any[]): any;
     <T = any>(clazz?: T, handler?: any): T;
-    extend<T = any>(clazz: T): T;
+    extend(...args: any[]): any;
     implement(clazz: any, ...clazzs: any[]): any;
     macro(name: string, callback: Function): void;
     getMacroable(name: string): any;
