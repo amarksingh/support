@@ -2,9 +2,13 @@
  * Class MixException.
  */
 class MixException {
+    public name: string;
+    public statusCode: number;
+    public message: string;
+
     /**
      * Create a new instance.
-     * @param {*} message
+     * @param message - The error message.
      */
     constructor(message: string) {
         this.name = this.constructor.name;
@@ -13,4 +17,5 @@ class MixException {
         Error.captureStackTrace(this, this.constructor);
     }
 }
-module.exports = MixException
+
+export = MixException;

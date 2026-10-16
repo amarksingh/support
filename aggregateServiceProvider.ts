@@ -1,52 +1,56 @@
-const ServiceProvider = require('./serviceProvider')
-const kProvders = Symbol('providers')
-const kInstances = Symbol('instances')
+import ServiceProvider from './serviceProvider';
+
+const kProvders: unique symbol = Symbol('providers');
+const kInstances: unique symbol = Symbol('instances');
+
 /**
  * Class AggregateServiceProvider.
  */
-class AggregateServiceProvider extends ServiceProvider
-{
+class AggregateServiceProvider extends ServiceProvider {
+    [kProvders]?: any[];
+    [kInstances]?: any[];
 
-    get $providers(){
-        return this[kProvders] = this[kProvders] || []
-    };
+    public get $providers(): any[] {
+        return this[kProvders] = this[kProvders] || [];
+    }
 
-    get $instances(){
-        return this[kInstances] = this[kInstances] || []
-    };
+    public get $instances(): any[] {
+        return this[kInstances] = this[kInstances] || [];
+    }
 
-    set $providers(value){
-        return this[kProvders] = value
-    };
+    public set $providers(value: any[]) {
+        this[kProvders] = value;
+    }
 
-    set $instances(value){
-        return this[kInstances] = value
-    };
+    public set $instances(value: any[]) {
+        this[kInstances] = value;
+    }
 
-    register()
-    {
-
+    /**
+     * Register aggregate providers.
+     */
+    public override register(): void {
         this.$instances = [];
-        for (let $provider of this.$providers) {
-            this.$instances.push(this.$app.register($provider))
+        for (const $provider of this.$providers) {
+            this.$instances.push(this.$app.register($provider));
         }
     }
 
-    provides()
-    {
+    /**
+     * Get aggregate provides.
+     *
+     * @returns Array of provided services.
+     */
+    public override provides(): string[] {
+        let $provides: string[] = [];
 
-        let $provides = [];
-
-        for (let $provider of this.$providers) {
-
-            let $instance = this.$app.resolveProvider($provider);
-
+        for (const $provider of this.$providers) {
+            const $instance = this.$app.resolveProvider($provider);
             $provides = $provides.concat($instance.provides());
         }
 
         return $provides;
     }
-
 }
 
-module.exports = AggregateServiceProvider
+export = AggregateServiceProvider;

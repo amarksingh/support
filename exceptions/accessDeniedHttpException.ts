@@ -1,11 +1,12 @@
-const AccessDeniedHttpExceptionInterface = require('@ostro/contracts/http/accessDeniedHttpException')
+import AccessDeniedHttpExceptionInterface from '@ostro/contracts/http/accessDeniedHttpException';
+
 /**
  * Class AccessDeniedHttpException.
  */
-class AccessDeniedHttpException extends Error {
+class AccessDeniedHttpException extends Error implements AccessDeniedHttpExceptionInterface {
     /**
      * Create a new instance.
-     * @param {*} message
+     * @param message - The error message.
      */
     constructor(message: string) {
         super(message);
@@ -13,4 +14,5 @@ class AccessDeniedHttpException extends Error {
         Error.captureStackTrace(this, this.constructor);
     }
 }
-module.exports = AccessDeniedHttpException
+
+export = AccessDeniedHttpException;

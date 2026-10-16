@@ -1,29 +1,31 @@
+import * as functions from './function';
+import * as arrays from './array';
+import * as strings from './string';
+import './object';
+
 let loaded = false;
+
 (function globals() {
     if (!loaded) {
-        loaded = true
-        const { ...functions } = require('./function')
-        const { ...arrays } = require('./array')
-        const strings = require('./string')
-        require('./object')
-        Object.keys(functions).map(helperKey => {
-            global[helperKey] = functions[helperKey]
-        })
-        Object.keys(arrays).map(arraykey => {
+        loaded = true;
+        Object.keys(functions).forEach(helperKey => {
+            (global as any)[helperKey] = (functions as any)[helperKey];
+        });
+        Object.keys(arrays).forEach(arraykey => {
             Object.defineProperty(Array.prototype, arraykey, {
-                value: arrays[arraykey],
+                value: (arrays as any)[arraykey],
                 enumerable: false,
                 writable: true,
                 configurable: true
             });
-        })
+        });
         const nativeStringProtoProps = new Set(Object.getOwnPropertyNames(String.prototype));
-        Object.keys(strings).map(strKey => {
-            const strFn = strings[strKey];
-            String[strKey] = strFn;
+        Object.keys(strings).forEach(strKey => {
+            const strFn = (strings as any)[strKey];
+            (String as any)[strKey] = strFn;
             if (!nativeStringProtoProps.has(strKey)) {
                 Object.defineProperty(String.prototype, strKey, {
-                    value: function (...args) {
+                    value: function (this: any, ...args: any[]) {
                         return strFn(this, ...args);
                     },
                     enumerable: false,
@@ -31,6 +33,8 @@ let loaded = false;
                     configurable: true
                 });
             }
-        })
+        });
     }
-})()
+})();
+
+export {};

@@ -1,10 +1,10 @@
-require('../object');
-const Env = require('../env');
-const Input = require('../input');
-const ErrorBag = require('../errorBag');
-const MessageBag = require('../messageBag');
-const InteractsWithTime = require('../interactsWithTime');
-const DateTime = require('../dateTime');
+import '../object';
+import Env from '../env';
+import Input from '../input';
+import ErrorBag from '../errorBag';
+import MessageBag from '../messageBag';
+import InteractsWithTime from '../interactsWithTime';
+import DateTime from '../dateTime';
 
 describe('Utility classes (env, input, errorBag, messageBag, object, interactsWithTime)', () => {
     describe('Env', () => {

@@ -1,60 +1,70 @@
-const MessageBagContracts = require('@ostro/contracts/support/messageBag')
-const { get, set } = require('lodash')
-const kMessage = Symbol('message')
+import MessageBagContracts from '@ostro/contracts/support/messageBag';
+import { get as lodashGet, set as lodashSet } from 'lodash';
+
+const kMessage: unique symbol = Symbol('message');
+
 /**
  * Class MessageBag.
  */
 class MessageBag extends MessageBagContracts {
+    [kMessage]: any;
+
     /**
      * Create a new instance.
-     * @param {*} objects
+     * @param objects - The initial messages object.
      */
     constructor(objects: any) {
-        super()
-        this[kMessage] = objects
+        super();
+        this[kMessage] = objects;
     }
+
     /**
-     * add method.
-     * @param {*} key
-     * @param {*} value
-     * @returns {any}
+     * Add a message to the bag.
+     * @param key - The property path.
+     * @param value - The message value.
+     * @returns The updated message container.
      */
-    add(key: string, value: any) {
-        return set(this[kMessage], key, value)
+    public add(key: string, value: any): any {
+        return lodashSet(this[kMessage], key, value);
     }
+
     /**
-     * get method.
-     * @param {*} key
-     * @param {*} defaultValue
-     * @returns {any}
+     * Get message(s) by key.
+     * @param key - The property path.
+     * @param defaultValue - Fallback value if key is not found.
+     * @returns The resolved message(s) or default.
      */
-    get(key: string, defaultValue: any = null) {
-        return get(this[kMessage], key) || defaultValue;
+    public get(key: string, defaultValue: any = null): any {
+        return lodashGet(this[kMessage], key) || defaultValue;
     }
+
     /**
-     * first method.
-     * @param {*} key
-     * @param {*} defaultValue
-     * @returns {any}
+     * Get the first message for a given key.
+     * @param key - The property path.
+     * @param defaultValue - Fallback value.
+     * @returns The first message or default.
      */
-    first(key: string, defaultValue: any = null) {
-        let data = this.get(key)
+    public first(key: string, defaultValue: any = null): any {
+        const data = this.get(key);
         return (Array.isArray(data) ? data[0] : data) || defaultValue;
     }
+
     /**
-     * has method.
-     * @param {*} key
-     * @returns {any}
+     * Check if a message key exists.
+     * @param key - The property path.
+     * @returns True if message exists, false otherwise.
      */
-    has(key: string) {
+    public has(key: string): boolean {
         return this.get(key) != undefined;
     }
+
     /**
-     * all method.
-     * @returns {any}
+     * Get all messages in the bag.
+     * @returns The raw messages container.
      */
-    all() {
-        return this[kMessage]
+    public all(): any {
+        return this[kMessage];
     }
 }
-module.exports = MessageBag
+
+export = MessageBag;

@@ -1,136 +1,136 @@
-const lodash = require('lodash');
-const { plural, singular } = require('./pluralize');
+import lodash from 'lodash';
+import { plural as _plural, singular as _singular } from './pluralize';
 
-exports.plural = (...arg) => plural(...arg);
-exports.singular = (...arg) => singular(...arg);
+export const plural = (...arg: Parameters<typeof _plural>): ReturnType<typeof _plural> => _plural(...arg);
+export const singular = (...arg: Parameters<typeof _singular>): ReturnType<typeof _singular> => _singular(...arg);
 
-exports.lower = function lower(string = '') {
+export function lower(string: any = ''): string {
     return String(string).toLowerCase();
 }
 
-exports.uper = function uper(string = '') {
+export function uper(string: any = ''): string {
     return String(string).toUpperCase();
 }
 
-exports.ucfirst = function ucfirst(string = '') {
+export function ucfirst(string: any = ''): string {
     const str = String(string);
     return str ? str[0].toUpperCase() + str.slice(1) : '';
 }
 
-exports.capitalize = function capitalize(string = '') {
+export function capitalize(string: any = ''): string {
     return lodash.capitalize(string);
 }
 
-exports.isString = function isString(content) {
+export function isString(content: unknown): content is string {
     return typeof content === 'string';
 }
 
-exports.pascal = function pascal(string = '') {
+export function pascal(string: any = ''): string {
     return lodash.upperFirst(lodash.camelCase(string));
 }
 
-exports.camelCase = (...arg) => lodash.camelCase(...arg);
+export const camelCase = (...arg: any[]): string => lodash.camelCase(...arg);
 
-exports.camel = exports.camelCase;
+export const camel = camelCase;
 
-exports.studly = exports.pascal;
+export const studly = pascal;
 
-exports.deburr = (...arg) => lodash.deburr(...arg);
+export const deburr = (...arg: any[]): string => lodash.deburr(...arg);
 
-exports.endsWith = (...arg) => lodash.endsWith(...arg);
+export const endsWith = (...arg: any[]): boolean => lodash.endsWith(...arg);
 
-exports.escape = (...arg) => lodash.escape(...arg);
+export const escape = (...arg: any[]): string => lodash.escape(...arg);
 
-exports.escapeRegExp = (...arg) => lodash.escapeRegExp(...arg);
+export const escapeRegExp = (...arg: any[]): string => lodash.escapeRegExp(...arg);
 
-exports.kebabCase = (...arg) => lodash.kebabCase(...arg);
+export const kebabCase = (...arg: any[]): string => lodash.kebabCase(...arg);
 
-exports.lowerFirst = (...arg) => lodash.lowerFirst(...arg);
+export const lowerFirst = (...arg: any[]): string => lodash.lowerFirst(...arg);
 
-exports.pad = (...arg) => lodash.pad(...arg);
+export const pad = (...arg: any[]): string => lodash.pad(...arg);
 
-exports.padEnd = (...arg) => lodash.padEnd(...arg);
+export const padEnd = (...arg: any[]): string => lodash.padEnd(...arg);
 
-exports.padStart = (...arg) => lodash.padStart(...arg);
+export const padStart = (...arg: any[]): string => lodash.padStart(...arg);
 
-exports.repeat = (...arg) => lodash.repeat(...arg);
+export const repeat = (...arg: any[]): string => lodash.repeat(...arg);
 
-exports.startCase = (...arg) => lodash.startCase(...arg);
+export const startCase = (...arg: any[]): string => lodash.startCase(...arg);
 
-exports.snakeCase = (...arg) => lodash.snakeCase(...arg);
+export const snakeCase = (...arg: any[]): string => lodash.snakeCase(...arg);
 
-exports.snake = exports.snakeCase;
+export const snake = snakeCase;
 
-exports.startsWith = (...arg) => lodash.startsWith(...arg);
+export const startsWith = (...arg: any[]): boolean => lodash.startsWith(...arg);
 
-exports.truncate = (...arg) => lodash.truncate(...arg);
+export const truncate = (...arg: any[]): string => lodash.truncate(...arg);
 
-exports.upperFirst = (...arg) => lodash.upperFirst(...arg);
+export const upperFirst = (...arg: any[]): string => lodash.upperFirst(...arg);
 
-exports.words = (...arg) => lodash.words(...arg);
+export const words = (...arg: any[]): string[] => lodash.words(...arg);
 
-exports.replace = (...arg) => lodash.replace(...arg);
+export const replace = (...arg: any[]): string => (lodash.replace as any)(...arg);
 
-exports.replaceFirst = function replaceFirst(string = '', pattern = '', replacement) {
-    var pStr = typeof pattern === 'string' ? pattern.replace(/\\/ig, '\\\\') : pattern;
-    return exports.replace(string, new RegExp(pStr), replacement);
+export function replaceFirst(string: any = '', pattern: string | RegExp = '', replacement: any = ''): string {
+    const pStr = typeof pattern === 'string' ? pattern.replace(/\\/ig, '\\\\') : pattern;
+    return replace(string, new RegExp(pStr), replacement);
 }
 
-exports.replaceAll = function replaceAll(string = '', pattern = '', replacement) {
-    var str = String(string);
+export function replaceAll(string: any = '', pattern: (string | RegExp)[] | string | RegExp = '', replacement: any = ''): string {
+    let str = String(string);
     if (Array.isArray(pattern)) {
-        for (var i = 0; i < pattern.length; i++) {
-            var itemStr = typeof pattern[i] === 'string' ? pattern[i].replace(/\\/ig, '\\\\') : pattern[i];
-            str = exports.replace(str, new RegExp(itemStr, "ig"), replacement);
+        for (let i = 0; i < pattern.length; i++) {
+            const itemStr = typeof pattern[i] === 'string' ? (pattern[i] as string).replace(/\\/ig, '\\\\') : pattern[i];
+            str = replace(str, new RegExp(itemStr, 'ig'), replacement);
         }
     } else {
-        var pStr = typeof pattern === 'string' ? pattern.replace(/\\/ig, '\\\\') : pattern;
-        str = exports.replace(str, new RegExp(pStr, "ig"), replacement);
+        const pStr = typeof pattern === 'string' ? pattern.replace(/\\/ig, '\\\\') : pattern;
+        str = replace(str, new RegExp(pStr, 'ig'), replacement);
     }
     return str;
 }
 
-exports.replaceArray = function replaceArray(string = '', find = [], replaceWith = []) {
-    var str = String(string);
-    for (var i = 0; i < find.length; i++) {
+export function replaceArray(string: any = '', find: (string | RegExp)[] = [], replaceWith: any[] = []): string {
+    let str = String(string);
+    for (let i = 0; i < find.length; i++) {
         str = str.replace(find[i], replaceWith[i]);
     }
     return str;
 }
 
-exports.replaceAllArray = function replaceAllArray(string = '', find = [], replaceWith = []) {
-    var str = String(string);
-    for (var i = 0; i < find.length; i++) {
-        str = str.replaceAll(find[i], replaceWith[i]);
+export function replaceAllArray(string: any = '', find: (string | RegExp)[] = [], replaceWith: any[] = []): string {
+    let str = String(string);
+    for (let i = 0; i < find.length; i++) {
+        str = (str as any).replaceAll(find[i], replaceWith[i]);
     }
     return str;
 }
 
-exports.trim = (...arg) => lodash.trim(...arg);
+export const trim = (...arg: any[]): string => lodash.trim(...arg);
 
-exports.trimEnd = (...arg) => lodash.trimEnd(...arg);
+export const trimEnd = (...arg: any[]): string => lodash.trimEnd(...arg);
 
-exports.finish = function finish(string = '', finished = '') {
-    var str = String(string);
+export function finish(string: any = '', finished: string = ''): string {
+    let str = String(string);
     if (!str.endsWith(finished)) {
         str = str + finished;
     }
     return str;
 }
 
-exports.after = function after(string = '', afterStr = '') {
-    return String(string).replace(new RegExp('(.*)' + afterStr), "");
+export function after(string: any = '', afterStr: string = ''): string {
+    return String(string).replace(new RegExp('(.*)' + afterStr), '');
 }
 
-exports.includes = function includes(string = '', wordsToInclude) {
+export function includes(string: any = '', wordsToInclude: string): boolean {
     return String(string).includes(wordsToInclude);
 }
 
-exports.contains = function contains(...args) {
-    return exports.includes(...args);
+export function contains(...args: [any, string]): boolean {
+    return includes(...args);
 }
 
-exports.pluralStudly = function pluralStudly(string = '') {
-    const studlyCaseString = exports.camelCase(string);
-    return exports.plural(studlyCaseString);
+export function pluralStudly(string: any = ''): string {
+    const studlyCaseString = camelCase(string);
+    return plural(studlyCaseString);
 }

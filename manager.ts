@@ -1,22 +1,27 @@
-const { Macroable } = require('./macro')
-const InvalidArgumentException = require('./exceptions/invalidArgumentException')
-const lodash = require('lodash')
-const StringHelper = require('./string')
-const { isset, is_null, method_exists } = require('./function')
-const MockContainer = require('./mockContainer')
+import { Macroable } from './macro';
+import InvalidArgumentException from './exceptions/invalidArgumentException';
+import lodash from 'lodash';
+import * as StringHelper from './string';
+import { isset, is_null, method_exists } from './function';
+import MockContainer from './mockContainer';
 
 /**
  * Class Manager.
  */
 class Manager extends Macroable {
+    public $container: any;
+    public $config: any;
+    public $customCreators: Record<string, Function>;
+    public $drivers: Record<string, any>;
+    public $type?: string;
 
     /**
      * Create a new instance.
-     * @param {*} application
+     * @param application - Application container instance.
      */
-    constructor(application: any) {
-        super()
-        let $container = application || (typeof app === 'function' ? app() : new MockContainer());
+    constructor(application?: any) {
+        super();
+        const $container = application || (typeof (globalThis as any).app === 'function' ? (globalThis as any).app() : new MockContainer());
         Object.defineProperties(this, {
             '$container': {
                 value: $container,
@@ -34,15 +39,16 @@ class Manager extends Macroable {
                 value: {},
                 writable: true
             }
-        })
+        });
     }
 
     /**
-     * driver method.
-     * @param {*} $driver
-     * @returns {any}
+     * Get a driver instance.
+     *
+     * @param $driver - Driver name.
+     * @returns Driver instance.
      */
-    driver($driver: any = null) {
+    public driver($driver: any = null): any {
         $driver = $driver || this.getDefaultDriver();
 
         if (is_null($driver)) {
@@ -57,138 +63,149 @@ class Manager extends Macroable {
     }
 
     /**
-     * getDriver method.
-     * @param {*} name
-     * @returns {any}
+     * Get driver instance by name.
+     *
+     * @param name - Driver name.
+     * @returns Resolved driver instance.
      */
-    getDriver(name: string) {
-        let $config = this.getDriverConfig(name);
+    public getDriver(name: string): any {
+        const $config = this.getDriverConfig(name);
         return this.resolve(name, $config);
     }
 
     /**
-     * resolve method.
-     * @param {*} $name
-     * @param {*} $config
-     * @returns {any}
+     * Resolve the given driver.
+     *
+     * @param $name - Driver name.
+     * @param $config - Driver configuration.
+     * @returns Resolved driver instance.
      */
-    resolve($name: string, $config: Record<string, any> = {}) {
-
+    public resolve($name: string, $config: Record<string, any> = {}): any {
         if (isset(this.$customCreators[$config['driver']])) {
             return this.callCustomCreator($config, $name);
         }
 
-        let $driverMethod = 'create' + StringHelper.pascal($config['driver']) + 'Driver';
+        const $driverMethod = 'create' + StringHelper.pascal($config['driver']) + 'Driver';
 
         if (method_exists(this, $driverMethod)) {
-            return this[$driverMethod]($config, $name);
+            return (this as any)[$driverMethod]($config, $name);
         }
 
         throw new InvalidArgumentException("Driver [" + $config['driver'] + "] not supported.");
     }
 
     /**
-     * callCustomCreator method.
-     * @param {*} $config
-     * @param {*} $name
-     * @returns {any}
+     * Call custom driver creator callback.
+     *
+     * @param $config - Driver config.
+     * @param $name - Driver name.
+     * @returns Driver instance.
      */
-    callCustomCreator($config: Record<string, any>, $name: string) {
+    public callCustomCreator($config: Record<string, any>, $name: string): any {
         return this.$customCreators[$config['driver']].call(this, this.$container, $name, $config);
     }
 
     /**
-     * extend method.
-     * @param {*} $driver
-     * @param {*} $callback
-     * @returns {any}
+     * Register a custom driver creator.
+     *
+     * @param $driver - Driver name.
+     * @param $callback - Creator callback.
+     * @returns Current manager instance.
      */
-    extend($driver: any, $callback: Function) {
+    public extend($driver: any, $callback: Function): this {
         this.$customCreators[$driver] = $callback;
         return this;
     }
 
     /**
-     * getDrivers method.
-     * @returns {any}
+     * Get all resolved drivers.
+     *
+     * @returns Drivers map.
      */
-    getDrivers() {
+    public getDrivers(): Record<string, any> {
         return this.$drivers;
     }
 
     /**
-     * getContainer method.
-     * @returns {any}
+     * Get the container instance.
+     *
+     * @returns Container instance.
      */
-    getContainer() {
+    public getContainer(): any {
         return this.$container;
     }
 
     /**
-     * setContainer method.
-     * @param {*} $container
-     * @returns {any}
+     * Set the container instance.
+     *
+     * @param $container - Container instance.
+     * @returns Current manager instance.
      */
-    setContainer($container: any) {
+    public setContainer($container: any): this {
         this.$container = $container;
         return this;
     }
 
     /**
-     * forgetDrivers method.
-     * @returns {any}
+     * Clear all resolved drivers.
+     *
+     * @returns Current manager instance.
      */
-    forgetDrivers() {
+    public forgetDrivers(): this {
         this.$drivers = {};
         return this;
     }
 
     /**
-     * setDefaultDriver method.
-     * @param {*} name
-     * @returns {any}
+     * Set default driver name.
+     *
+     * @param name - Default driver name.
      */
-    setDefaultDriver(name: string) {
-        lodash.set(this.$config, `${this.$type}.default`, name)
+    public setDefaultDriver(name: string): void {
+        lodash.set(this.$config, `${this.$type}.default`, name);
     }
 
     /**
-     * getDefaultDriver method.
-     * @returns {any}
+     * Get default driver name.
+     *
+     * @returns Default driver name.
      */
-    getDefaultDriver() {
+    public getDefaultDriver(): any {
         return lodash.get(this.$config, `${this.$type}.default`);
     }
 
     /**
-     * getConfig method.
-     * @param {*} name
-     * @param {*} defaultValue
-     * @returns {any}
+     * Get configuration value.
+     *
+     * @param name - Configuration key.
+     * @param defaultValue - Fallback value.
+     * @returns Configuration value.
      */
-    getConfig(name: string, defaultValue: any) {
-        return lodash.get(this.$config, `${this.$type}.${name}`, defaultValue)
+    public getConfig(name: string, defaultValue?: any): any {
+        return lodash.get(this.$config, `${this.$type}.${name}`, defaultValue);
     }
 
     /**
-     * getDriverConfig method.
-     * @param {*} name
-     * @returns {any}
+     * Get driver configuration.
+     *
+     * @param name - Driver name.
+     * @returns Driver configuration.
      */
-    getDriverConfig(name: string) {
+    public getDriverConfig(name: string): any {
         return lodash.get(this.$config, `${this.$type}.drivers.${name}`);
     }
 
     /**
-     * __call method.
-     * @param {*} target
-     * @param {*} $method
-     * @param {*} $parameters
-     * @returns {any}
+     * Magic call proxy method.
+     *
+     * @param target - Target object.
+     * @param $method - Method name.
+     * @param $parameters - Call parameters.
+     * @returns Result of method call on default driver.
      */
-    __call(target: Record<string, any>, $method: string, $parameters: any[]) {
+    public __call(target: Record<string, any>, $method: string, $parameters: any[]): any {
         return target.driver()[$method](...$parameters);
     }
 }
 
-module.exports = Manager
+export = Manager;

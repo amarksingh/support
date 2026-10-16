@@ -1,6 +1,6 @@
-const DateTime = require('../dateTime');
-const { DateTime: LuxonDateTime } = require('luxon');
-const InvalidArgumentException = require('../exceptions/invalidArgumentException');
+import DateTime from '../dateTime';
+import { DateTime as LuxonDateTime } from 'luxon';
+import InvalidArgumentException from '../exceptions/invalidArgumentException';
 
 describe('DateTime', () => {
     afterEach(() => {
@@ -110,7 +110,7 @@ describe('DateTime', () => {
     });
 
     test('use, useDefault, useCallable, useClass, useFactory', () => {
-        const callable = function() {};
+        const callable = function () {};
         DateTime.use(callable);
         expect(DateTime.$callable).toBe(callable);
         expect(DateTime.$dateClass).toBeNull();

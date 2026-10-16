@@ -1,264 +1,200 @@
-const { DateTime: LuxonDateTime } = require("luxon");
-const InvalidArgumentException = require('./exceptions/invalidArgumentException');
-const { is_callable, is_object, is_string } = require('./function');
+import { DateTime as LuxonDateTime } from 'luxon';
+import InvalidArgumentException from './exceptions/invalidArgumentException';
+import { is_callable, is_string } from './function';
+
 /**
  * Class DateTime.
  */
 class DateTime extends Date {
-    static DEFAULT_CLASS_NAME = LuxonDateTime;
+    public static DEFAULT_CLASS_NAME: any = LuxonDateTime;
 
-    static $callable = null;
+    public static $callable: any = null;
 
-    static $factory = null;
+    public static $factory: any = null;
 
-    static $dateClass = null;
+    public static $dateClass: any = null;
+
+    public DATE_TIME_CACHED?: any;
 
     /**
-     * getTimeZone method.
-     * @static
-     * @returns {any}
+     * Get timezone from process environment.
+     *
+     * @returns Timezone string or undefined.
      */
-    static getTimeZone() {
-        return process.env.TZ
+    public static getTimeZone(): string | undefined {
+        return process.env.TZ;
     }
 
     /**
-     * Get DATE_TIME.
-     * @returns {any}
+     * Get underlying DATE_TIME object.
+     *
+     * @returns Luxon DateTime instance.
      */
-    get DATE_TIME() {
+    public get DATE_TIME(): any {
         if (!this.DATE_TIME_CACHED) {
+            const ctor = this.constructor as typeof DateTime;
             Object.defineProperty(this, 'DATE_TIME_CACHED', {
                 writable: true,
                 enumerable: false,
-                value: this.constructor.DEFAULT_CLASS_NAME.utc().setZone(this.constructor.getTimeZone())
-            })
+                value: ctor.DEFAULT_CLASS_NAME.utc().setZone(ctor.getTimeZone())
+            });
         }
-        return this.DATE_TIME_CACHED
+        return this.DATE_TIME_CACHED;
     }
 
     /**
-     * Set DATE_TIME.
-     * @param {*} value
+     * Set underlying DATE_TIME object.
+     *
+     * @param value - Luxon DateTime instance.
      */
-    set DATE_TIME(value) {
+    public set DATE_TIME(value: any) {
         Object.defineProperty(this, 'DATE_TIME_CACHED', {
             writable: true,
             enumerable: false,
             value: value
-        })
+        });
     }
+
     /**
-     * Create a new instance.
-     * @param {*} date
+     * Create a new DateTime instance.
+     *
+     * @param date - Optional date or DateTime instance.
      */
-    constructor(date: any) {
+    constructor(date?: any) {
+        super(...(arguments as any));
+        const ctor = this.constructor as typeof DateTime;
 
-        super(...arguments);
-
-        if (date instanceof this.constructor || date instanceof LuxonDateTime) {
-            this.DATE_TIME = date
+        if (date instanceof (this.constructor as any) || date instanceof LuxonDateTime) {
+            this.DATE_TIME = date;
         }
         if (date instanceof Date) {
-            this.DATE_TIME = this.constructor.DEFAULT_CLASS_NAME.fromISO(date.toISOString())
+            this.DATE_TIME = ctor.DEFAULT_CLASS_NAME.fromISO(date.toISOString());
         }
-
     }
 
     /**
-     * create method.
-     * @param {*} $year
-     * @param {*} $month
-     * @param {*} $day
-     * @param {*} $hour
-     * @param {*} $minute
-     * @param {*} $second
-     * @param {*} $tz
-     * @returns {any}
+     * Create a date with specified parts.
      */
-    create($year: number = 0, $month: number = 0, $day: number = 0, $hour: number = 0, $minute: number = 0, $second: number = 0, $tz: any = null) {
-        return this.constructor.DEFAULT_CLASS_NAME.utc($year, $month, $day, $hour, $minute, $second).setZone($tz || this.constructor.getTimeZone())
+    public create($year: number = 0, $month: number = 0, $day: number = 0, $hour: number = 0, $minute: number = 0, $second: number = 0, $tz: any = null): any {
+        const ctor = this.constructor as typeof DateTime;
+        return ctor.DEFAULT_CLASS_NAME.utc($year, $month, $day, $hour, $minute, $second).setZone($tz || ctor.getTimeZone());
     }
 
     /**
-     * createFromDate method.
-     * @param {*} $year
-     * @param {*} $month
-     * @param {*} $day
-     * @param {*} $tz
-     * @returns {any}
+     * Create a date from date components.
      */
-    createFromDate($year: any = null, $month: any = null, $day: any = null, $tz: any = null) {
-        return this.constructor.DEFAULT_CLASS_NAME.utc($year, $month, $day, 0, 0, 0).setZone($tz || this.constructor.getTimeZone())
+    public createFromDate($year: any = null, $month: any = null, $day: any = null, $tz: any = null): any {
+        const ctor = this.constructor as typeof DateTime;
+        return ctor.DEFAULT_CLASS_NAME.utc($year, $month, $day, 0, 0, 0).setZone($tz || ctor.getTimeZone());
     }
 
     /**
-     * createFromFormat method.
-     * @param {*} $format
-     * @param {*} $time
-     * @param {*} $tz
-     * @returns {any}
+     * Create a date from format string.
      */
-    createFromFormat($format: any, $time: any, $tz: any = null) {
-        return this.constructor.DEFAULT_CLASS_NAME.fromFormat($time, $format, { setZone: $tz || this.constructor.getTimeZone() })
+    public createFromFormat($format: any, $time: any, $tz: any = null): any {
+        const ctor = this.constructor as typeof DateTime;
+        return ctor.DEFAULT_CLASS_NAME.fromFormat($time, $format, { setZone: $tz || ctor.getTimeZone() });
     }
 
     /**
-     * createFromTime method.
-     * @param {*} $hour
-     * @param {*} $minute
-     * @param {*} $second
-     * @param {*} $tz
-     * @returns {any}
+     * Create a date from time components.
      */
-    createFromTime($hour: number = 0, $minute: number = 0, $second: number = 0, $tz: any = null) {
-        let now = this.constructor.DEFAULT_CLASS_NAME.utc().setZone($tz || this.constructor.getTimeZone());
+    public createFromTime($hour: number = 0, $minute: number = 0, $second: number = 0, $tz: any = null): any {
+        const ctor = this.constructor as typeof DateTime;
+        const now = ctor.DEFAULT_CLASS_NAME.utc().setZone($tz || ctor.getTimeZone());
         return now.set({ hour: $hour, minute: $minute, second: $second, millisecond: 0 });
     }
 
     /**
-     * getTime method.
-     * @returns {any}
+     * Get time as string.
      */
-    getTime() {
-        return this.toString()
+    public getTime(): any {
+        return this.toString();
     }
 
     /**
-     * now method.
-     * @static
-     * @returns {any}
+     * Get current DateTime instance.
      */
-    static now() {
-        return (new this).now()
+    public static now(): any {
+        return (new this()).now();
     }
 
     /**
-     * utc method.
-     * @returns {any}
+     * Get UTC DateTime.
      */
-    utc() {
-        const date = this.constructor.DEFAULT_CLASS_NAME.utc();
-        return this.newDate(date)
-    }
-
-    /**
-     * now method.
-     * @param {*} $tz
-     * @returns {any}
-     */
-    now($tz: any = null) {
-        let date = this.constructor.DEFAULT_CLASS_NAME.utc().setZone(this.constructor.getTimeZone())
-        if ($tz)
-            date = date.setZone($tz);
+    public utc(): any {
+        const ctor = this.constructor as typeof DateTime;
+        const date = ctor.DEFAULT_CLASS_NAME.utc();
         return this.newDate(date);
     }
 
     /**
-     * add method.
-     * @param {*} date
-     * @returns {any}
+     * Get now DateTime for given timezone.
      */
-    add(date: any) {
-        let diff = {};
-        if (date instanceof this.constructor) {
-            diff = date.DATE_TIME.diff(this.DATE_TIME);
+    public now($tz: any = null): any {
+        const ctor = this.constructor as typeof DateTime;
+        let date = ctor.DEFAULT_CLASS_NAME.utc().setZone(ctor.getTimeZone());
+        if ($tz) {
+            date = date.setZone($tz);
+        }
+        return this.newDate(date);
+    }
 
+    /**
+     * Add date diff.
+     */
+    public add(date: any): any {
+        let diff: any = {};
+        if (date instanceof (this.constructor as any)) {
+            diff = date.DATE_TIME.diff(this.DATE_TIME);
         }
         if (date instanceof LuxonDateTime) {
             diff = date.diff(this.DATE_TIME);
         }
-        return this.plus(diff.milliseconds)
+        return this.plus(diff.milliseconds);
     }
 
     /**
-     * plus method.
-     * @param {*} obj
-     * @returns {any}
+     * Plus interval.
      */
-    plus(obj: any) {
-        const date = this.clone(this.DATE_TIME)
+    public plus(obj: any): any {
+        const date = this.clone(this.DATE_TIME);
         return this.newDate(date.plus(obj));
     }
 
-    /**
-     * addSeconds method.
-     * @param {*} value
-     * @returns {any}
-     */
-    addSeconds(value: any) {
+    public addSeconds(value: any): any {
         return this.plus({ seconds: value });
     }
 
-    /**
-     * addMinutes method.
-     * @param {*} value
-     * @returns {any}
-     */
-    addMinutes(value: any) {
+    public addMinutes(value: any): any {
         return this.plus({ minutes: value });
     }
 
-    /**
-     * addHours method.
-     * @param {*} value
-     * @returns {any}
-     */
-    addHours(value: any) {
+    public addHours(value: any): any {
         return this.plus({ hours: value });
     }
 
-    /**
-     * addDays method.
-     * @param {*} value
-     * @returns {any}
-     */
-    addDays(value: any) {
+    public addDays(value: any): any {
         return this.plus({ days: value });
     }
 
-    /**
-     * addWeeks method.
-     * @param {*} value
-     * @returns {any}
-     */
-    addWeeks(value: any) {
+    public addWeeks(value: any): any {
         return this.plus({ weeks: value });
     }
 
-    /**
-     * addYears method.
-     * @param {*} value
-     * @returns {any}
-     */
-    addYears(value: any) {
+    public addYears(value: any): any {
         return this.plus({ years: value });
     }
 
-    /**
-     * format method.
-     * @param {*} format
-     * @returns {any}
-     */
-    format(format: any) {
-        return this.DATE_TIME.toFormat(format).toString()
+    public format(format: any): string {
+        return this.DATE_TIME.toFormat(format).toString();
     }
 
-    /**
-     * getTimestamp method.
-     * @returns {any}
-     */
-    getTimestamp() {
-        return this.DATE_TIME.ts
+    public getTimestamp(): number {
+        return this.DATE_TIME.ts;
     }
 
-    /**
-     * use method.
-     * @static
-     * @param {*} $handler
-     * @returns {any}
-     */
-    static use($handler: Function) {
+    public static use($handler: any): any {
         if (is_callable($handler)) {
             return this.useCallable($handler);
         } else if (is_string($handler)) {
@@ -267,79 +203,43 @@ class DateTime extends Date {
         throw new InvalidArgumentException('Invalid date creation handler. Please provide a class name, callable, or Carbon factory.');
     }
 
-    /**
-     * useDefault method.
-     * @static
-     * @returns {any}
-     */
-    static useDefault() {
+    public static useDefault(): void {
         this.$callable = null;
         this.$factory = null;
         this.$dateClass = null;
     }
 
-    /**
-     * useCallable method.
-     * @static
-     * @param {*} $callable
-     * @returns {any}
-     */
-    static useCallable($callable: any) {
+    public static useCallable($callable: any): void {
         this.$callable = $callable;
         this.$factory = null;
         this.$dateClass = null;
     }
 
-    /**
-     * useClass method.
-     * @static
-     * @param {*} $dateClass
-     * @returns {any}
-     */
-    static useClass($dateClass: any) {
+    public static useClass($dateClass: any): void {
         this.$dateClass = $dateClass;
         this.$factory = null;
         this.$callable = null;
     }
 
-    /**
-     * useFactory method.
-     * @static
-     * @param {*} $factory
-     * @returns {any}
-     */
-    static useFactory($factory: any) {
+    public static useFactory($factory: any): void {
         this.$factory = $factory;
         this.$callable = null;
         this.$dateClass = null;
     }
 
-    /**
-     * clone method.
-     * @param {*} date
-     * @returns {any}
-     */
-    clone(date: any) {
-        return new this.constructor.DEFAULT_CLASS_NAME(date)
+    public clone(date: any): any {
+        const ctor = this.constructor as typeof DateTime;
+        return new ctor.DEFAULT_CLASS_NAME(date);
     }
 
-    /**
-     * newDate method.
-     * @param {*} date
-     * @returns {any}
-     */
-    newDate(date: any) {
-        return new this.constructor(date)
+    public newDate(date: any): any {
+        const ctor = this.constructor as any;
+        return new ctor(date);
     }
 
-    /**
-     * toString method.
-     * @returns {any}
-     */
-    toString() {
+    public toString(): string {
         return this.DATE_TIME.toFormat('yyyy-MM-dd HH:mm:ss');
     }
-
 }
 
-module.exports = DateTime
+export = DateTime;

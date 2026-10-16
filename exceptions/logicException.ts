@@ -2,16 +2,21 @@
  * Class LogicException.
  */
 class LogicException extends Error {
+    public code: string;
+    public statusCode: number;
+
     /**
      * Create a new instance.
-     * @param {*} message
+     * @param message - The error message.
      */
     constructor(message: string) {
-        super();
+        super(message);
         this.name = this.constructor.name;
         this.code = 'LOGIC_ERROR';
         this.message = message;
-        this.statusCode = 500
+        this.statusCode = 500;
+        Error.captureStackTrace(this, this.constructor);
     }
 }
-module.exports = LogicException
+
+export = LogicException;

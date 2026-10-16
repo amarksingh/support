@@ -1,15 +1,17 @@
-const ServiceProvider = require('./serviceProvider')
+import ServiceProvider from './serviceProvider';
+
 /**
  * Class DeferrableProvider.
  */
 class DeferrableProvider extends ServiceProvider {
-
     /**
-     * isDeferred method.
-     * @returns {any}
+     * Determine if provider is deferred.
+     *
+     * @returns True if deferred.
      */
-    isDeferred() {
-        return true
+    public override isDeferred(): boolean {
+        return true;
     }
 }
-module.exports = DeferrableProvider
+
+export = DeferrableProvider;

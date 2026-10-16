@@ -2,16 +2,20 @@
  * Class UnpossibleEntityException.
  */
 class UnpossibleEntityException {
+    public name: string;
+    public statusCode: number;
+    public message: string;
+
     /**
      * Create a new instance.
-     * @param {*} message
+     * @param message - The error message.
      */
-    constructor(message: string) {
+    constructor(message?: string) {
         this.name = this.constructor.name;
         this.message = message || 'Unpossible Entity Exception';
         this.statusCode = 422;
         Error.captureStackTrace(this, this.constructor);
-
     }
 }
-module.exports = UnpossibleEntityException
+
+export = UnpossibleEntityException;

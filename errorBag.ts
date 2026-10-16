@@ -1,54 +1,62 @@
-const ErrorBagcontract = require('@ostro/contracts/support/errorBag')
-const { get, set } = require('lodash')
-const kErrors = Symbol('errors')
+import ErrorBagContract from '@ostro/contracts/support/errorBag';
+import { get as lodashGet, set as lodashSet } from 'lodash';
+
+const kErrors: unique symbol = Symbol('errors');
+
 /**
  * Class ErrorBag.
  */
-class ErrorBag extends ErrorBagcontract {
+class ErrorBag extends ErrorBagContract {
+    [kErrors]: any;
+
     /**
      * Create a new instance.
-     * @param {*} objects
+     * @param objects - The initial errors object.
      */
     constructor(objects: any) {
-        super()
-        this[kErrors] = objects
+        super();
+        this[kErrors] = objects;
     }
+
     /**
-     * add method.
-     * @param {*} key
-     * @param {*} value
-     * @returns {any}
+     * Add an error key/value.
+     * @param key - The property path.
+     * @param value - The error value.
+     * @returns The updated target object.
      */
-    add(key: string, value: any) {
-        return set(this[kErrors], key, value);
+    public add(key: string, value: any): any {
+        return lodashSet(this[kErrors], key, value);
     }
+
     /**
-     * get method.
-     * @param {*} key
-     * @param {*} defaultValue
-     * @returns {any}
+     * Get error(s) by key.
+     * @param key - The property path.
+     * @param defaultValue - Fallback value if key is not found.
+     * @returns The resolved error(s) or default.
      */
-    get(key: string, defaultValue: any = null) {
-        return get(this[kErrors], key) || defaultValue;
+    public get(key: string, defaultValue: any = null): any {
+        return lodashGet(this[kErrors], key) || defaultValue;
     }
+
     /**
-     * first method.
-     * @param {*} key
-     * @param {*} defaultValue
-     * @returns {any}
+     * Get the first error for a given key.
+     * @param key - The property path.
+     * @param defaultValue - Fallback value.
+     * @returns The first error message or default.
      */
-    first(key: string, defaultValue: any = null) {
-        let data = this.get(key)
+    public first(key: string, defaultValue: any = null): any {
+        const data = this.get(key);
         return (Array.isArray(data) ? data[0] : data) || defaultValue;
     }
+
     /**
-     * has method.
-     * @param {*} key
-     * @returns {any}
+     * Check if a key exists in the error bag.
+     * @param key - The property path.
+     * @returns True if error exists, false otherwise.
      */
-    has(key: string) {
+    public has(key: string): boolean {
         return this.get(key) != undefined;
     }
 }
 
-module.exports = ErrorBag
+export = ErrorBag;

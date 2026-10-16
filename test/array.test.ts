@@ -1,4 +1,4 @@
-const { groupBy, last, intersection, shuffle, unique, diff, difference, wrap } = require('../array');
+import { groupBy, last, intersection, shuffle, unique, diff, difference, wrap } from '../array';
 
 describe('array', () => {
     test('groupBy groups elements by function or property name', () => {
@@ -12,7 +12,7 @@ describe('array', () => {
         expect(groupedByProp.admin).toHaveLength(2);
         expect(groupedByProp.user).toHaveLength(1);
 
-        const groupedByFn = groupBy.call(users, u => u.role.toUpperCase());
+        const groupedByFn = groupBy.call(users, (u: any) => u.role.toUpperCase());
         expect(groupedByFn.ADMIN).toHaveLength(2);
         expect(groupedByFn.USER).toHaveLength(1);
     });

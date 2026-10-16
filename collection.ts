@@ -1,8 +1,9 @@
-const lodash = require('lodash')
-const { Macroable } = require('./macro')
-const CollectionInterface = require('@ostro/contracts/collection/collect')
-const kUpdateData = Symbol('update')
-import type { ICollection } from '@ostro/contracts/collection/collect'
+import lodash from 'lodash';
+import { Macroable } from './macro';
+import CollectionInterface from '@ostro/contracts/collection/collect';
+import type { ICollection } from '@ostro/contracts/collection/collect';
+
+const kUpdateData: unique symbol = Symbol('update');
 
 /**
  * Class Collection.
@@ -570,4 +571,4 @@ class Collection<T = any> extends Macroable.extend(CollectionInterface) implemen
 
 }
 
-module.exports = Collection
+export = Collection;

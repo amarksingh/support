@@ -1,15 +1,25 @@
-const url = require('url');
-const querystring = require('querystring');
+import querystring from 'querystring';
+
+export interface ParsedDatabaseConfiguration {
+    driver: string | null;
+    database: string | null;
+    host: string | null;
+    port: string | null;
+    username: string | null;
+    password: string | null;
+    [key: string]: any;
+}
 
 /**
  * Class ConfigurationUrlParser.
  */
 class ConfigurationUrlParser {
+    public $driverAliases: Record<string, string>;
+
     /**
      * Create a new instance.
      */
     constructor() {
-
         this.$driverAliases = {
             'mssql': 'sqlsrv',
             'mysql2': 'mysql', // RDS
@@ -22,35 +32,35 @@ class ConfigurationUrlParser {
     }
 
     /**
-     * parseConfiguration method.
-     * @param {*} config
-     * @returns {any}
+     * Parse configuration URL into config object.
+     *
+     * @param config - Configuration object or string URL.
+     * @returns Parsed configuration.
      */
-    parseConfiguration(config: Record<string, any>) {
-        if (typeof config === 'string') {
-            config = { url: config };
-        }
-       const $url = config['url'];
+    public parseConfiguration(config: string | Record<string, any>): Record<string, any> {
+        let conf: Record<string, any> = typeof config === 'string' ? { url: config } : config;
+        const $url = conf['url'];
 
-        if (! $url) {
-            return config;
+        if (!$url) {
+            return conf;
         }
-        const urlParts = this.parseUrl(config.url);
+        const urlParts = this.parseUrl(conf['url']);
         const decodedComponents = this.parseStringsToNativeTypes(urlParts);
 
         return {
-            ...config,
+            ...conf,
             ...this.getPrimaryOptions(decodedComponents),
             ...this.getQueryOptions(urlParts),
         };
     }
 
     /**
-     * getPrimaryOptions method.
-     * @param {*} url
-     * @returns {any}
+     * Get primary connection options from URL parts.
+     *
+     * @param url - Parsed URL parts.
+     * @returns Primary options object.
      */
-    getPrimaryOptions(url: string) {
+    public getPrimaryOptions(url: any): ParsedDatabaseConfiguration {
         return {
             driver: this.getDriver(url),
             database: this.getDatabase(url),
@@ -61,13 +71,13 @@ class ConfigurationUrlParser {
         };
     }
 
-
     /**
-     * getDriver method.
-     * @param {*} url
-     * @returns {any}
+     * Get driver name for the given URL protocol.
+     *
+     * @param url - URL object.
+     * @returns Driver name or null.
      */
-    getDriver(url: string) {
+    public getDriver(url: any): string | null {
         const alias = url.protocol && url.protocol.replace(':', '');
 
         if (!alias) {
@@ -78,11 +88,12 @@ class ConfigurationUrlParser {
     }
 
     /**
-     * getDatabase method.
-     * @param {*} url
-     * @returns {any}
+     * Get database name from URL pathname.
+     *
+     * @param url - URL object.
+     * @returns Database name or null.
      */
-    getDatabase(url: string) {
+    public getDatabase(url: any): string | null {
         let path = url.pathname || '';
         if (path.startsWith('/')) {
             path = path.slice(1);
@@ -91,11 +102,12 @@ class ConfigurationUrlParser {
     }
 
     /**
-     * getQueryOptions method.
-     * @param {*} url
-     * @returns {any}
+     * Get query string options.
+     *
+     * @param url - URL object.
+     * @returns Query options object.
      */
-    getQueryOptions(url: string) {
+    public getQueryOptions(url: any): Record<string, any> {
         const queryString = url.search ? url.search.replace(/^\?/, '') : (url.query || '');
 
         if (!queryString) {
@@ -103,19 +115,20 @@ class ConfigurationUrlParser {
         }
 
         const query = querystring.parse(queryString);
-        const result = {};
-        for (let key in query) {
+        const result: Record<string, any> = {};
+        for (const key in query) {
             result[key] = this.parseStringsToNativeTypes(query[key]);
         }
         return result;
     }
 
     /**
-     * parseUrl method.
-     * @param {*} url
-     * @returns {any}
+     * Parse database configuration URL string into a URL object.
+     *
+     * @param url - URL string.
+     * @returns Parsed URL instance.
      */
-    parseUrl(url: string) {
+    public parseUrl(url: string): URL {
         url = url.replace(/^(sqlite3?):\/\//, '$1://null/');
 
         const parsedUrl = new URL(url);
@@ -128,11 +141,12 @@ class ConfigurationUrlParser {
     }
 
     /**
-     * parseStringsToNativeTypes method.
-     * @param {*} value
-     * @returns {any}
+     * Parse strings to native JSON types if applicable.
+     *
+     * @param value - Value to parse.
+     * @returns Decoded value.
      */
-    parseStringsToNativeTypes(value: any) {
+    public parseStringsToNativeTypes(value: any): any {
         if (Array.isArray(value)) {
             return value.map(v => this.parseStringsToNativeTypes(v));
         }
@@ -143,24 +157,29 @@ class ConfigurationUrlParser {
 
         try {
             return JSON.parse(value);
-        } catch (error) {
+        } catch {
             return value;
         }
     }
 
-    get$DriverAliases() {
+    /**
+     * Get driver aliases map.
+     *
+     * @returns Driver aliases.
+     */
+    public get$DriverAliases(): Record<string, string> {
         return this.$driverAliases;
     }
 
     /**
-     * addDriverAlias method.
-     * @param {*} alias
-     * @param {*} driver
-     * @returns {any}
+     * Add a custom driver alias.
+     *
+     * @param alias - Driver alias name.
+     * @param driver - Target driver name.
      */
-    addDriverAlias(alias: any, driver: any) {
+    public addDriverAlias(alias: string, driver: string): void {
         this.$driverAliases[alias] = driver;
     }
 }
 
-module.exports = ConfigurationUrlParser;
+export = ConfigurationUrlParser;

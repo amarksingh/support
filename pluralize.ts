@@ -1,27 +1,29 @@
-const lodash = require('lodash');
+import lodash from 'lodash';
 
-var pluralRules = [];
-var singularRules = [];
-var uncountables = {};
-var irregularPlurals = {};
-var irregularSingles = {};
+let pluralRules: [RegExp, string][] = [];
+let singularRules: [RegExp, string][] = [];
+const uncountables: Record<string, boolean> = {};
+const irregularPlurals: Record<string, string> = {};
+const irregularSingles: Record<string, string> = {};
 
 /**
- * sanitizeRule handler.
- * @param {*} rule
- * @returns {any}
+ * Sanitize rule into a RegExp.
+ *
+ * @param rule - String pattern or RegExp.
+ * @returns RegExp rule.
  */
-function sanitizeRule(rule) {
+function sanitizeRule(rule: string | RegExp): RegExp {
     return typeof rule === 'string' ? new RegExp('^' + rule + '$', 'i') : rule;
 }
 
 /**
- * restoreCase handler.
- * @param {*} word
- * @param {*} token
- * @returns {any}
+ * Restore word case according to token pattern.
+ *
+ * @param word - Word to restore case from.
+ * @param token - Token to format.
+ * @returns Case-restored token.
  */
-function restoreCase(word, token) {
+function restoreCase(word: string, token: string): string {
     if (word === token) return token;
     if (word === word.toLowerCase()) return token.toLowerCase();
     if (word === word.toUpperCase()) return token.toUpperCase();
@@ -30,26 +32,28 @@ function restoreCase(word, token) {
 }
 
 /**
- * replaceWordRule handler.
- * @param {*} word
- * @param {*} rule
- * @returns {any}
+ * Replace word using regex rule.
+ *
+ * @param word - Input word.
+ * @param rule - Replacement rule tuple.
+ * @returns Replaced word.
  */
-function replaceWordRule(word, rule) {
+function replaceWordRule(word: string, rule: [RegExp, string]): string {
     return word.replace(rule[0], (match, index, ...args) => {
-        var res = rule[1].replace(/\$(\d{1,2})/g, (m, i) => args[i] || '');
+        const res = rule[1].replace(/\$(\d{1,2})/g, (_m, i) => args[i] || '');
         return restoreCase(match || word[index - 1], res);
     });
 }
 
 /**
- * sanitizeWord handler.
- * @param {*} token
- * @param {*} word
- * @param {*} rules
- * @returns {any}
+ * Sanitize word checking against uncountables and rules.
+ *
+ * @param token - Lowercase token.
+ * @param word - Original word.
+ * @param rules - Rules list.
+ * @returns Sanitized word.
  */
-function sanitizeWord(token, word, rules) {
+function sanitizeWord(token: string, word: string, rules: [RegExp, string][]): string {
     if (!token.length || lodash.has(uncountables, token)) return word;
     for (let i = rules.length - 1; i >= 0; i--) {
         if (rules[i][0].test(word)) return replaceWordRule(word, rules[i]);
@@ -58,15 +62,20 @@ function sanitizeWord(token, word, rules) {
 }
 
 /**
- * replaceWord handler.
- * @param {*} replaceMap
- * @param {*} keepMap
- * @param {*} rules
- * @returns {any}
+ * Create a word replacement function based on rules and maps.
+ *
+ * @param replaceMap - Replacement dictionary.
+ * @param keepMap - Unaltered dictionary.
+ * @param rules - List of regex rules.
+ * @returns Replacement function.
  */
-function replaceWord(replaceMap, keepMap, rules) {
-    return function (word) {
-        var token = String(word).toLowerCase();
+function replaceWord(
+    replaceMap: Record<string, string>,
+    keepMap: Record<string, string>,
+    rules: [RegExp, string][]
+) {
+    return function (word: string): string {
+        const token = String(word).toLowerCase();
         if (lodash.has(keepMap, token)) return restoreCase(word, token);
         if (lodash.has(replaceMap, token)) return restoreCase(word, replaceMap[token]);
         return sanitizeWord(token, String(word), rules);
@@ -74,11 +83,11 @@ function replaceWord(replaceMap, keepMap, rules) {
 }
 
 /**
- * addUncountableRule handler.
- * @param {*} word
- * @returns {any}
+ * Register an uncountable word rule.
+ *
+ * @param word - String word or regex.
  */
-function addUncountableRule(word) {
+function addUncountableRule(word: string | RegExp): void {
     if (typeof word === 'string') {
         uncountables[word.toLowerCase()] = true;
     } else {
@@ -88,19 +97,19 @@ function addUncountableRule(word) {
 }
 
 /**
- * addIrregularRule handler.
- * @param {*} single
- * @param {*} plural
- * @returns {any}
+ * Register an irregular word rule.
+ *
+ * @param single - Singular form.
+ * @param plural - Plural form.
  */
-function addIrregularRule(single, plural) {
+function addIrregularRule(single: string, plural: string): void {
     plural = plural.toLowerCase();
     single = single.toLowerCase();
     irregularSingles[single] = plural;
     irregularPlurals[plural] = single;
 }
 
-[
+const irregulars: [string, string][] = [
     ['I', 'we'],
     ['me', 'us'],
     ['he', 'they'],
@@ -153,7 +162,9 @@ function addIrregularRule(single, plural) {
     ['pickaxe', 'pickaxes'],
     ['passerby', 'passersby'],
     ['canvas', 'canvases']
-].forEach(function (rule) {
+];
+
+irregulars.forEach(function (rule) {
     addIrregularRule(rule[0], rule[1]);
 });
 
@@ -212,7 +223,7 @@ singularRules = [
     [/men$/i, 'man']
 ];
 
-[
+const uncountablesList: (string | RegExp)[] = [
     'adulthood', 'advice', 'agenda', 'aid', 'aircraft', 'alcohol', 'ammo', 'analytics', 'anime',
     'athletics', 'audio', 'bison', 'blood', 'bream', 'buffalo', 'butter', 'carp', 'cash',
     'chassis', 'chess', 'clothing', 'cod', 'commerce', 'cooperation', 'corps', 'debris',
@@ -225,36 +236,35 @@ singularRules = [
     'sewage', 'shambles', 'shrimp', 'software', 'staff', 'swine', 'tennis', 'traffic',
     'transportation', 'trout', 'tuna', 'wealth', 'welfare', 'whiting', 'wildebeest', 'wildlife',
     'you', /pok[eé]mon$/i, /[^aeiou]ese$/i, /deer$/i, /fish$/i, /measles$/i, /o[iu]s$/i, /pox$/i, /sheep$/i
-].forEach(addUncountableRule);
+];
+
+uncountablesList.forEach(addUncountableRule);
 
 const getPlural = replaceWord(irregularSingles, irregularPlurals, pluralRules);
 const getSingular = replaceWord(irregularPlurals, irregularSingles, singularRules);
 
 /**
- * plural handler.
- * @param {*} string
- * @param {*} count
- * @param {*} inclusive
- * @returns {any}
+ * Pluralize a word.
+ *
+ * @param string - Word to pluralize.
+ * @param count - Optional count to determine singular vs plural.
+ * @param inclusive - Whether to include the count prefix in the output.
+ * @returns Pluralized word.
  */
-function plural(string = '', count, inclusive) {
+export function plural(string: string = '', count?: number, inclusive?: boolean): string {
     if (typeof count === 'number') {
-        var pluralized = count === 1 ? getSingular(string) : getPlural(string);
+        const pluralized = count === 1 ? getSingular(string) : getPlural(string);
         return (inclusive ? count + ' ' : '') + pluralized;
     }
     return getPlural(string);
 }
 
 /**
- * singular handler.
- * @param {*} string
- * @returns {any}
+ * Singularize a word.
+ *
+ * @param string - Word to singularize.
+ * @returns Singular word.
  */
-function singular(string = '') {
+export function singular(string: string = ''): string {
     return getSingular(string);
 }
-
-module.exports = {
-    plural,
-    singular
-};

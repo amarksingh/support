@@ -1,11 +1,15 @@
-const PageNotFoundExceptionContract = require('@ostro/contracts/http/pageNotFoundException')
+import PageNotFoundExceptionContract from '@ostro/contracts/http/pageNotFoundException';
+
 /**
  * Class PageNotFoundException.
  */
 class PageNotFoundException extends PageNotFoundExceptionContract {
+    public error: any;
+    public statusCode: number;
+
     /**
      * Create a new instance.
-     * @param {*} error
+     * @param error - The error details.
      */
     constructor(error: any) {
         super();
@@ -14,7 +18,7 @@ class PageNotFoundException extends PageNotFoundExceptionContract {
         this.error = error;
         this.statusCode = 404;
         Error.captureStackTrace(this, this.constructor);
-
     }
 }
-module.exports = PageNotFoundException
+
+export = PageNotFoundException;

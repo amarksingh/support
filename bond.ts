@@ -1,5 +1,10 @@
-const getAllProperties = object => {
-    const properties = new Set();
+export interface BondOptions {
+    include?: (string | RegExp)[];
+    exclude?: (string | RegExp)[];
+}
+
+const getAllProperties = (object: any): Set<[any, string | symbol]> => {
+    const properties = new Set<[any, string | symbol]>();
 
     do {
         for (const key of Reflect.ownKeys(object)) {
@@ -10,10 +15,26 @@ const getAllProperties = object => {
     return properties;
 };
 
-module.exports = (self, bond = null, { include, exclude } = {}) => {
-
-    const filter = key => {
-        const match = pattern => typeof pattern === 'string' ? key === pattern : pattern.test(key);
+/**
+ * Bind methods of a class instance to itself.
+ *
+ * @typeParam T - The object type.
+ * @param self - The target instance to bind methods on.
+ * @param bond - Optional properties to assign onto the instance.
+ * @param options - Options containing include and/or exclude patterns.
+ * @returns The bound instance.
+ */
+function bond<T extends Record<string, any>>(
+    self: T,
+    bond: Record<string, any> | null = null,
+    { include, exclude }: BondOptions = {}
+): T {
+    const filter = (key: string | symbol): boolean => {
+        if (typeof key === 'symbol') {
+            return false;
+        }
+        const match = (pattern: string | RegExp): boolean =>
+            typeof pattern === 'string' ? key === pattern : pattern.test(key);
 
         if (include) {
             return include.some(match);
@@ -33,12 +54,14 @@ module.exports = (self, bond = null, { include, exclude } = {}) => {
 
         const descriptor = Reflect.getOwnPropertyDescriptor(object, key);
         if (descriptor && typeof descriptor.value === 'function') {
-            self[key] = self[key].bind(self);
+            self[key as keyof T] = (self[key as keyof T] as any).bind(self);
         }
     }
     if (bond != null) {
-        Object.assign(self, bond)
+        Object.assign(self, bond);
     }
 
     return self;
-};
+}
+
+export = bond;

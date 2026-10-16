@@ -1,11 +1,12 @@
-const bond = require('../bond');
-const { compose, errors } = require('../compose');
-const ConfigurationUrlParser = require('../configurationUrlParser');
-const { plural, singular } = require('../pluralize');
-const Str = require('../string');
+import bond from '../bond';
+import { compose, errors } from '../compose';
+import ConfigurationUrlParser from '../configurationUrlParser';
+import { plural, singular } from '../pluralize';
+import * as Str from '../string';
 
 describe('bond', () => {
     class Base {
+        prop?: string;
         baseMethod() {
             return this.prop;
         }
@@ -37,7 +38,7 @@ describe('bond', () => {
         const { childMethod, otherMethod } = instance;
         expect(childMethod()).toBe('val');
         expect(otherMethod()).toBe('other');
-        expect(instance.extra).toBe(123);
+        expect((instance as any).extra).toBe(123);
     });
 
     test('binds with exclude filter (string and regex)', () => {
@@ -57,21 +58,21 @@ describe('compose and errors', () => {
 
     test('compose standard middleware chain (req, res, next)', (done) => {
         const middleware = compose(
-            (req, res, next) => {
+            (req: any, res: any, next: any) => {
                 req.step1 = true;
                 next();
             },
             [
-                (req, res, next) => {
+                (req: any, res: any, next: any) => {
                     req.step2 = true;
                     next();
                 }
             ]
         );
 
-        const req = {};
-        const res = {};
-        middleware(req, res, (err) => {
+        const req: any = {};
+        const res: any = {};
+        middleware(req, res, (err: any) => {
             expect(err).toBeUndefined();
             expect(req.step1).toBe(true);
             expect(req.step2).toBe(true);
@@ -82,23 +83,23 @@ describe('compose and errors', () => {
     test('compose error handling middleware and next(err)', (done) => {
         const testErr = new Error('middleware failure');
         const middleware = compose(
-            (req, res, next) => {
+            (req: any, res: any, next: any) => {
                 next(testErr);
             },
-            (req, res, next) => {
+            (req: any, res: any, next: any) => {
                 // should be skipped because of err
                 req.skipped = true;
                 next();
             },
-            (err, req, res, next) => {
+            (err: any, req: any, res: any, next: any) => {
                 expect(err).toBe(testErr);
                 req.errorCaught = true;
                 next();
             }
         );
 
-        const req = {};
-        middleware(req, {}, (err) => {
+        const req: any = {};
+        middleware(req, {}, (err: any) => {
             expect(req.errorCaught).toBe(true);
             expect(req.skipped).toBeUndefined();
             done();
@@ -107,17 +108,17 @@ describe('compose and errors', () => {
 
     test('throws error if next() called multiple times', (done) => {
         const middleware = compose(
-            (req, res, next) => {
+            (req: any, res: any, next: any) => {
                 next();
                 try {
                     next();
-                } catch (e) {
+                } catch (e: any) {
                     expect(e).toBeInstanceOf(TypeError);
                     expect(e.message).toContain('`next()` called multiple times');
                     done();
                 }
             },
-            (req, res, next) => {
+            (req: any, res: any, next: any) => {
                 next();
             }
         );
@@ -126,13 +127,13 @@ describe('compose and errors', () => {
 
     test('errors middleware generator', (done) => {
         const middleware = errors(
-            (err, req, res, next) => {
+            (err: any, req: any, res: any, next: any) => {
                 req.handled = true;
                 next(err);
             }
         );
-        const req = {};
-        middleware(new Error('boom'), req, {}, (err) => {
+        const req: any = {};
+        middleware(new Error('boom'), req, {}, (err: any) => {
             expect(req.handled).toBe(true);
             expect(err.message).toBe('boom');
             done();
@@ -141,10 +142,10 @@ describe('compose and errors', () => {
 
     test('catches thrown synchronous error in handler', (done) => {
         const middleware = compose(
-            (req, res, next) => {
+            (req: any, res: any, next: any) => {
                 throw new Error('sync thrown');
             },
-            (err, req, res, next) => {
+            (err: any, req: any, res: any, next: any) => {
                 expect(err.message).toBe('sync thrown');
                 next();
             }
@@ -156,11 +157,11 @@ describe('compose and errors', () => {
 
     test('rethrows synchronous error if next() was already called', () => {
         const middleware = compose(
-            (req, res, next) => {
+            (req: any, res: any, next: any) => {
                 next();
                 throw new Error('after next sync error');
             },
-            (req, res, next) => {
+            (req: any, res: any, next: any) => {
                 next();
             }
         );

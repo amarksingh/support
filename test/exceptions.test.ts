@@ -1,14 +1,14 @@
-const AccessDeniedHttpException = require('../exceptions/accessDeniedHttpException');
-const HttpException = require('../exceptions/httpException');
-const InvalidArgumentException = require('../exceptions/invalidArgumentException');
-const InvalidDataTypeException = require('../exceptions/invalidDataTypeException');
-const LogicException = require('../exceptions/logicException');
-const MethodNotAvailable = require('../exceptions/methodNotAvailable');
-const MixException = require('../exceptions/mixException');
-const PageNotFoundException = require('../exceptions/pageNotFoundException');
-const RuntimeException = require('../exceptions/runtimeException');
-const UnauthenticatedException = require('../exceptions/unauthenticatedException');
-const UnpossibleEntityException = require('../exceptions/unpossibleEntityException');
+import AccessDeniedHttpException from '../exceptions/accessDeniedHttpException';
+import HttpException from '../exceptions/httpException';
+import InvalidArgumentException from '../exceptions/invalidArgumentException';
+import InvalidDataTypeException from '../exceptions/invalidDataTypeException';
+import LogicException from '../exceptions/logicException';
+import MethodNotAvailable from '../exceptions/methodNotAvailable';
+import MixException from '../exceptions/mixException';
+import PageNotFoundException from '../exceptions/pageNotFoundException';
+import RuntimeException from '../exceptions/runtimeException';
+import UnauthenticatedException from '../exceptions/unauthenticatedException';
+import UnpossibleEntityException from '../exceptions/unpossibleEntityException';
 
 describe('exceptions', () => {
     test('AccessDeniedHttpException sets name and message', () => {

@@ -1,308 +1,310 @@
-const nodePath = require('path');
-const path = nodePath;
-const fs = require('fs-extra')
-const util = require('util')
+import nodePath from 'path';
+import fs from 'fs-extra';
+import util from 'util';
+import crypto from 'crypto';
+
+// Framework global registered by OstroJS at boot time
+declare const app: (abstract?: any) => any;
+
 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-exports.callsites = () => {
+export const path = nodePath;
+
+export const callsites = (): any => {
 	const _prepareStackTrace = Error.prepareStackTrace;
 	Error.prepareStackTrace = (_, stack) => stack;
-	const stack = new Error().stack.slice(1);
+	const stack = (new Error().stack as any).slice(1);
 	Error.prepareStackTrace = _prepareStackTrace;
 	return stack;
 };
 
-exports.path = nodePath
-
-
-
-exports.is_numeric = function (num) {
+export function is_numeric(num: any): boolean {
 	return !isNaN(parseFloat(num)) && isFinite(num);
 }
 
-exports.url = function url(baseUrl, ...pieces) {
-	return new URL(path.join(...pieces), baseUrl).href
+export function url(baseUrl: string, ...pieces: string[]): string {
+	return new URL(nodePath.join(...pieces), baseUrl).href;
 }
 
-exports.is_function = function (fn) {
-	return typeof fn == 'function'
+export function is_function(fn: any): fn is Function {
+	return typeof fn === 'function';
 }
 
-exports.array_merge = function (array, array2) {
-	return array.concat(array2)
+export function array_merge<T = any>(array: T[], array2: T[]): T[] {
+	return array.concat(array2);
 }
 
-exports.unset = function (target, key) {
+export function unset(target: any, key: any): void {
 	if (target && key !== undefined) {
-		delete target[key]
+		delete target[key];
 	}
 }
 
-exports.random = function (length) {
+export function random(length: number): string {
 	let result = '';
 	const charactersLength = characters.length;
 	for (let i = 0; i < length; i++) {
 		result += characters.charAt(Math.floor(Math.random() * charactersLength));
 	}
-
 	return result;
 }
 
-exports.debounce = (func, delay) => {
-	let debounceTimer
-	let fn = function () {
-		const context = this
-		const args = arguments
-		clearTimeout(debounceTimer)
-		debounceTimer
-			= setTimeout(() => func.apply(context, args), delay)
-	}
+export const debounce = (func: Function, delay: number): { (...args: any[]): void; clear: () => void } => {
+	let debounceTimer: any;
+	let fn: any = function (this: any) {
+		const context = this;
+		const args = arguments;
+		clearTimeout(debounceTimer);
+		debounceTimer = setTimeout(() => func.apply(context, args), delay);
+	};
 	fn.clear = function () {
-		clearTimeout(debounceTimer)
-	}
-	return fn
-}
+		clearTimeout(debounceTimer);
+	};
+	return fn;
+};
 
-exports.promiseAll = function promiseAll(object) {
-	let promisedProperties = [];
+export function promiseAll(object: Record<string, any>): Promise<Record<string, any>> {
+	let promisedProperties: Promise<any>[] = [];
 	const objectKeys = Object.keys(object);
-	objectKeys.forEach((key) => promisedProperties.push(object[key].catch(err => null)));
+	objectKeys.forEach((key) => promisedProperties.push(object[key].catch((_err: any) => null)));
 	return Promise.all(promisedProperties)
 		.then((resolvedValues) => {
-			return resolvedValues.reduce((resolvedObject, property, index) => {
+			return resolvedValues.reduce((resolvedObject: any, property: any, index: number) => {
 				resolvedObject[objectKeys[index]] = property;
 				return resolvedObject;
 			}, object);
-		})
+		});
 }
 
-exports.include = function include(dir) {
-	return require(dir)
+export function include(dir: string): any {
+	return require(dir);
 }
 
-exports.call_user_func = function (fn, ...args) {
-	return fn(...args)
+export function call_user_func(fn: Function, ...args: any[]): any {
+	return fn(...args);
 }
 
-exports.use = function include(dir) {
-	return require(dir)
+export function use(dir: string): any {
+	return require(dir);
 }
 
-exports.exists = function (arg, value) {
-	return arg || value
+export function exists(arg: any, value: any): any {
+	return arg || value;
 }
 
-exports.empty = function ($value) {
-	if (!$value)
-		return true
-	else if (typeof $value == 'object' && !Array.isArray($value))
-		return Object.keys($value).length == 0
-	else if (Array.isArray($value))
-		return $value.length == 0
-	else
-		return false
-}
-
-exports.setPropertyToClassProto = function (proto, obj) {
-	for (let key in obj) {
-		proto.prototype[key] = obj[key]
+export function empty($value: any): boolean {
+	if (!$value) {
+		return true;
+	} else if (typeof $value == 'object' && !Array.isArray($value)) {
+		return Object.keys($value).length == 0;
+	} else if (Array.isArray($value)) {
+		return $value.length == 0;
+	} else {
+		return false;
 	}
 }
 
-exports.count = function ($value) {
-	if (Array.isArray($value))
-		return $value.length
-	else if ($value && typeof $value == 'object')
-		return Object.keys($value).length
-	else
-		return 0
+export function setPropertyToClassProto(proto: any, obj: Record<string, any>): void {
+	for (let key in obj) {
+		proto.prototype[key] = obj[key];
+	}
 }
 
-exports.clone = function (obj) {
-	if (obj == null || typeof obj !== "object") { return obj; }
-	var result = {};
-	var keys_ = Object.getOwnPropertyNames(obj);
-	for (var i = 0; i < keys_.length; i++) {
-		var key = keys_[i],
-			value = obj[key];
+export function count($value: any): number {
+	if (Array.isArray($value)) {
+		return $value.length;
+	} else if ($value && typeof $value == 'object') {
+		return Object.keys($value).length;
+	} else {
+		return 0;
+	}
+}
+
+export function clone<T = any>(obj: T): T {
+	if (obj == null || typeof obj !== 'object') {
+		return obj;
+	}
+	let result: any = {};
+	let keys_ = Object.getOwnPropertyNames(obj);
+	for (let i = 0; i < keys_.length; i++) {
+		let key = keys_[i];
+		let value = (obj as any)[key];
 		result[key] = value;
 	}
 
-	Object.setPrototypeOf(result, obj.__proto__);
+	Object.setPrototypeOf(result, Object.getPrototypeOf(obj));
 	return result;
 }
 
-exports.IsClass = function (func) {
+export function IsClass(func: any): boolean {
 	return typeof func === 'function' && /^class\s/.test(Function.prototype.toString.call(func));
 }
 
-exports.str_replace = function str_replace(match, replacer, text) {
-	return text.replace(match, replacer)
+export function str_replace(match: string | RegExp, replacer: any, text: string): string {
+	return text.replace(match, replacer);
 }
 
-exports.strlen = function strlen(text = '') {
-	return text.length
+export function strlen(text: string = ''): number {
+	return text.length;
 }
 
-exports.strpos = function (text = '', search) {
-	return text.includes(search)
+export function strpos(text: string = '', search: string): boolean {
+	return text.includes(search);
 }
 
-exports.call_user_func = function (fn, ...args) {
-	return fn(...args)
+export function is_null(data: any): boolean {
+	return data == null;
 }
 
-exports.is_null = function (data) {
-	return data == null
+export function is_json(data: any): boolean {
+	return typeof data == 'object' && !Array.isArray(data);
 }
 
-exports.is_json = function (data) {
-	return typeof data == 'object' && !Array.isArray(data)
+export function is_array(data: any): data is any[] {
+	return Array.isArray(data);
 }
 
-exports.is_array = function (data) {
-	return Array.isArray(data)
+export function method_exists(instance: any = {}, method: string): boolean {
+	return method in instance && typeof instance[method] == 'function';
 }
 
-exports.method_exists = function (instance = {}, method) {
-	return method in instance && typeof instance[method] == 'function'
+export function is_callable($cb: any): $cb is Function {
+	return typeof $cb == 'function';
 }
 
-exports.is_callable = function ($cb) {
-	return typeof $cb == 'function'
+export function is_object($data: any): boolean {
+	return typeof $data == 'object';
 }
 
-exports.is_object = function ($data) {
-	return typeof $data == 'object'
+export function is_string($data: any): $data is string {
+	return typeof $data == 'string';
 }
 
-exports.is_string = function ($data) {
-	return typeof $data == 'string'
-}
-
-exports.isset = function (...args) {
-	let check = false
-	for (var i = 0; i < args.length; i++) {
-		check = typeof args[i] != 'undefined'
+export function isset(...args: any[]): boolean {
+	let check = false;
+	for (let i = 0; i < args.length; i++) {
+		check = typeof args[i] != 'undefined';
 		if (check == false) {
-			return false
+			return false;
 		}
 	}
-	return check
+	return check;
 }
 
-exports.tap = function (value, fn) {
-	fn(value)
-	return value
+export function tap<T = any>(value: T, fn: (val: T) => any): T {
+	fn(value);
+	return value;
 }
 
-exports.date = function (string) {
-	return Date.format(string)
+export function date(string: any): any {
+	return (Date as any).format(string);
 }
 
-exports.isFile = function ($path) {
-	return fs.lstat($path).then(stats => stats.isFile()).catch(err => false);
+export function isFile($path: string): Promise<boolean> {
+	return fs.lstat($path).then((stats: any) => stats.isFile()).catch((_err: any) => false);
 }
 
-
-
-exports.is_file = function ($path) {
-	return this.isFile($path)
+export function is_file($path: string): Promise<boolean> {
+	return isFile($path);
 }
 
-exports.isDirectory = function ($path) {
-	return fs.lstat($path).then(stats => stats.isDirectory()).catch(err => false);
+export function isDirectory($path: string): Promise<boolean> {
+	return fs.lstat($path).then((stats: any) => stats.isDirectory()).catch((_err: any) => false);
 }
 
-exports.is_directory = function ($path) {
-	return this.isDirectory($path)
+export function is_directory($path: string): Promise<boolean> {
+	return isDirectory($path);
 }
 
-exports.isSymbolicLink = function ($path) {
-	return fs.lstat($path).then(stats => stats.isSymbolicLink()).catch(err => false);
+export function isSymbolicLink($path: string): Promise<boolean> {
+	return fs.lstat($path).then((stats: any) => stats.isSymbolicLink()).catch((_err: any) => false);
 }
 
-exports.dirname = function ($path) {
-	return path.dirname($path)
+export function dirname($path: string): string {
+	return nodePath.dirname($path);
 }
 
-exports.isFunction = function (functionToCheck) {
+export function isFunction(functionToCheck: any): boolean {
 	return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
 }
 
-exports.env = function (key, defaultValue) {
-	let value = process.env[key]
+export function env(key: string, defaultValue?: any): any {
+	let value: any = process.env[key];
 	if (!value && typeof defaultValue != 'undefined') {
-		value = defaultValue
+		value = defaultValue;
 	}
 
 	if (value === 'true') value = true;
 	else if (value === 'false') value = false;
 	else if (value === 'null') value = null;
-	return value
+	return value;
 }
 
-exports.config = function (arg, defaultValue) {
-	let conf = app('config')
+export function config(arg?: any, defaultValue?: any): any {
+	let conf = app('config');
 	if (is_json(arg)) {
 		for (let key in arg) {
-			conf.set(key, arg[key])
+			conf.set(key, arg[key]);
 		}
 	} else {
-		return conf.get(arg, defaultValue)
+		return conf.get(arg, defaultValue);
 	}
 }
 
-exports.storage_path = function () {
-	return base_path('storage', '/', ...arguments)
+export function base_path(...args: string[]): string {
+	return nodePath.normalize(nodePath.join(process.cwd(), nodePath.join('/', ...args)));
 }
 
-exports.public_path = function () {
-	return base_path('public', '/', ...arguments)
+export function storage_path(...args: string[]): string {
+	return base_path('storage', '/', ...args);
 }
 
-exports.database_path = function () {
-	return base_path('database', '/', ...arguments)
+export function public_path(...args: string[]): string {
+	return base_path('public', '/', ...args);
 }
 
-exports.view_path = function () {
-	return base_path('resources', 'views', '/', ...arguments)
+export function database_path(...args: string[]): string {
+	return base_path('database', '/', ...args);
 }
 
-exports.app_path = function () {
-	return base_path('app', ...arguments)
+export function view_path(...args: string[]): string {
+	return base_path('resources', 'views', '/', ...args);
 }
 
-exports.app_url = function () {
-	return env('APP_URL')
+export function app_path(...args: string[]): string {
+	return base_path('app', ...args);
 }
 
-exports.collect = function (data) {
-	return require('./collection').collect(data)
+export function app_url(): any {
+	return env('APP_URL');
 }
 
-exports.mix = function (assetPath) {
-	return app('mix').path(assetPath)
+export function collect(data?: any): any {
+	return require('./collection').collect(data);
 }
 
-exports.get_class_name = function ($class) {
+export function mix(assetPath: string): any {
+	return app('mix').path(assetPath);
+}
+
+export function get_class_name($class: any): string | undefined {
 	let name = typeof $class == 'object' ? $class?.constructor?.name : (typeof $class == 'function' ? $class.name : undefined);
 	return name ? name.replace(/^bound\s+/, '') : name;
 }
 
-exports.get_class = function ($class) {
+export function get_class($class: any): any {
 	return $class.constructor;
 }
 
-exports.deepAssign = function (target, ...sources) {
+export function deepAssign(target: any, ...sources: any[]): any {
 	sources.forEach(source => {
-		let descriptors = Object.keys(source).reduce((descriptors, key) => {
-			descriptors[key] = Object.getOwnPropertyDescriptor(source, key);
-			return descriptors;
+		let descriptors: Record<string | symbol, any> = Object.keys(source).reduce((desc: Record<string, any>, key: string) => {
+			desc[key] = Object.getOwnPropertyDescriptor(source, key);
+			return desc;
 		}, {});
 		Object.getOwnPropertySymbols(source).forEach(sym => {
 			let descriptor = Object.getOwnPropertyDescriptor(source, sym);
-			if (descriptor.enumerable) {
+			if (descriptor && descriptor.enumerable) {
 				descriptors[sym] = descriptor;
 			}
 		});
@@ -311,158 +313,147 @@ exports.deepAssign = function (target, ...sources) {
 	return target;
 }
 
-exports.mergePath = function () {
-	return nodePath.resolve(Array.from(arguments).reduce((newDir, dir) => {
-		if (newDir != '')
-			return newDir + '/' + dir
-		else
-			return newDir + dir
-	}, ''))
+export function mergePath(...args: string[]): string {
+	return nodePath.resolve(args.reduce((newDir, dir) => {
+		if (newDir != '') {
+			return newDir + '/' + dir;
+		} else {
+			return newDir + dir;
+		}
+	}, ''));
 }
 
-exports.base_path = function () {
-	return nodePath.normalize(nodePath.join(process.cwd(), nodePath.join('/', ...arguments)))
-}
-
-exports.implement = function (base, ...mixins) {
+export function implement(base: any, ...mixins: any[]): any {
 	let aggregate = class __Aggregate extends base {
 		/**
 		 * Create a new instance.
-		 * @param {*} args
+		 * @param args - Constructor arguments.
 		 */
-		constructor(...args) {
-			super(...args)
+		constructor(...args: any[]) {
+			super(...args);
 			mixins.forEach((mixin) => {
-				if (typeof mixin.prototype.initializer === "function") {
-					mixin.prototype.initializer.apply(this, args)
+				if (typeof mixin.prototype.initializer === 'function') {
+					mixin.prototype.initializer.apply(this, args);
 				} else {
-					Object.defineProperties(this, Object.getOwnPropertyDescriptors(new (mixin)(...args)))
+					Object.defineProperties(this, Object.getOwnPropertyDescriptors(new (mixin)(...args)));
 				}
-			})
-
+			});
 		}
 	};
 
-	let copyProps = (target, source) => {
+	let copyProps = (target: any, source: any) => {
 		Object.getOwnPropertyNames(source)
-			.concat(Object.getOwnPropertySymbols(source))
+			.concat(Object.getOwnPropertySymbols(source) as any[])
 			.forEach((prop) => {
-				if (typeof prop == 'string' && prop.match(/^(?:initializer|prototype|arguments|caller|name|bind|call|apply|toString|length)$/))
-					return
-
-				else {
-					Object.defineProperty(target, prop, Object.getOwnPropertyDescriptor(source, prop))
+				if (typeof prop == 'string' && prop.match(/^(?:initializer|prototype|arguments|caller|name|bind|call|apply|toString|length)$/)) {
+					return;
+				} else {
+					Object.defineProperty(target, prop, Object.getOwnPropertyDescriptor(source, prop)!);
 				}
-			})
-	}
+			});
+	};
 
 	mixins.forEach((mixin) => {
-		copyProps(aggregate.prototype, mixin.prototype)
-		copyProps(aggregate, mixin)
-	})
-	Object.defineProperty(aggregate, 'name', { value: base.name, configurable: true })
-	return aggregate
+		copyProps(aggregate.prototype, mixin.prototype);
+		copyProps(aggregate, mixin);
+	});
+	Object.defineProperty(aggregate, 'name', { value: base.name, configurable: true });
+	return aggregate;
 }
 
-exports.valueType = function (value) {
+export function valueType(value: any): string {
 	if (typeof value === 'string') {
 		return 'string';
 	} else if (value instanceof Array) {
-		return 'array'
+		return 'array';
 	} else if (typeof value == 'object' && !Array.isArray(value)) {
-		return 'json'
+		return 'json';
 	} else if (typeof Number(value) === 'number' && !isNaN(Number(value)) && typeof value !== 'boolean') {
-		return 'number'
+		return 'number';
 	} else {
-		return typeof value
+		return typeof value;
 	}
-
 }
 
-exports.last = function (arr) {
-	return arr.length ? arr[arr.length - 1] : undefined
+export function last<T = any>(arr: T[]): T | undefined {
+	return arr.length ? arr[arr.length - 1] : undefined;
 }
 
-exports.trim = function (str, chr) {
-	var rgxtrim = (!chr) ? new RegExp('^\\s+|\\s+$', 'g') : new RegExp('^' + chr + '+|' + chr + '+$', 'g');
+export function trim(str: string, chr?: string): string {
+	let rgxtrim = (!chr) ? new RegExp('^\\s+|\\s+$', 'g') : new RegExp('^' + chr + '+|' + chr + '+$', 'g');
 	return str.replace(rgxtrim, '');
 }
 
-exports.rtrim = function (str, chr) {
-	var rgxtrim = (!chr) ? new RegExp('\\s+$') : new RegExp(chr + '+$');
+export function rtrim(str: string, chr?: string): string {
+	let rgxtrim = (!chr) ? new RegExp('\\s+$') : new RegExp(chr + '+$');
 	return str.replace(rgxtrim, '');
 }
 
-exports.ltrim = function (str, chr) {
-	var rgxtrim = (!chr) ? new RegExp('^\\s+') : new RegExp('^' + chr + '+');
+export function ltrim(str: string, chr?: string): string {
+	let rgxtrim = (!chr) ? new RegExp('^\\s+') : new RegExp('^' + chr + '+');
 	return str.replace(rgxtrim, '');
 }
 
-exports.class_basename = function ($class) {
-	$class = typeof $class == 'object' ? $class.constructor.name : $class;
-
-	return path.basename($class);
+export function class_basename($class: any): string {
+	let className = typeof $class == 'object' && $class !== null ? $class.constructor.name : $class;
+	return nodePath.basename(className);
 }
 
-exports.sprintf = function () {
-	return util.format(...arguments);
+export function sprintf(...args: any[]): string {
+	return util.format(...args);
 }
 
-exports.in_array = function (value, datas = []) {
-	return Array.isArray(datas) && datas.includes(value)
+export function in_array(value: any, datas: any[] = []): boolean {
+	return Array.isArray(datas) && datas.includes(value);
 }
 
-exports.range = function (start, end, step = 1) {
+export function range(start: number, end: number, step: number = 1): number[] {
 	return Array.from({ length: Math.floor((end - start) / step) + 1 }, (_, index) => start + index * step);
 }
 
-exports.str_contains = function (data, check) {
+export function str_contains(data: any, check: string): boolean {
 	return typeof data == 'string' ? data.includes(check) : false;
 }
 
-exports.getCallerFunctionName = function (name) {
-	const stack = new Error().stack.split('\n');
+export function getCallerFunctionName(name: string): string {
+	const stack = new Error().stack?.split('\n') || [];
 
 	let callerFunctionName = '';
 	for (let i = 2; i < stack.length; i++) {
 		const line = stack[i].trim();
 		const matches = line.match(/at\s+Proxy\.(\w+)\s+\(/);
 		if (matches && matches[1] == name) {
-			const fnNames = stack[i + 1].trim().match(/at\s+Proxy\.(\w+)\s+\(/);
-			callerFunctionName = fnNames[1];
+			const fnNames = stack[i + 1]?.trim().match(/at\s+Proxy\.(\w+)\s+\(/);
+			if (fnNames && fnNames[1]) {
+				callerFunctionName = fnNames[1];
+			}
 			break;
 		}
-
-
 	}
 
 	return callerFunctionName;
 }
 
-exports.hash_equals = function (knownString, userString) {
+export function hash_equals(knownString: unknown, userString: unknown): boolean {
 	if (typeof knownString !== 'string' || typeof userString !== 'string') {
 		return false;
 	}
-	const crypto = require('crypto');
 	const a = Buffer.from(knownString);
 	const b = Buffer.from(userString);
 	if (a.length !== b.length) {
 		return false;
 	}
 	return crypto.timingSafeEqual(a, b);
-};
+}
 
-exports.value = function (val, ...args) {
+export function value(val: any, ...args: any[]): any {
 	return typeof val === 'function' ? val(...args) : val;
-};
+}
 
-exports.md5 = function (str) {
-	const crypto = require('crypto');
+export function md5(str: any): string {
 	return crypto.createHash('md5').update(String(str)).digest('hex');
-};
+}
 
-exports.sha1 = function (str) {
-	const crypto = require('crypto');
+export function sha1(str: any): string {
 	return crypto.createHash('sha1').update(String(str)).digest('hex');
-};
-
+}

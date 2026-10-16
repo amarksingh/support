@@ -1,6 +1,6 @@
-const ServiceProvider = require('../serviceProvider');
-const DeferrableProvider = require('../deferrableProvider');
-const AggregateServiceProvider = require('../aggregateServiceProvider');
+import ServiceProvider from '../serviceProvider';
+import DeferrableProvider from '../deferrableProvider';
+import AggregateServiceProvider from '../aggregateServiceProvider';
 
 describe('Service Providers', () => {
     describe('ServiceProvider', () => {
@@ -63,7 +63,7 @@ describe('Service Providers', () => {
         });
 
         test('register registers all providers via $app.register', () => {
-            const registered = [];
+            const registered: any[] = [];
             const mockApp = {
                 register: jest.fn((p) => {
                     registered.push(p);

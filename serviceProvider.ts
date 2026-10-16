@@ -2,75 +2,69 @@
  * Class ServiceProvider.
  */
 class ServiceProvider {
+    public $app: any;
+
     /**
      * Create a new instance.
-     * @param {*} $app
+     * @param $app - Application container instance.
      */
     constructor($app: any) {
-        this.$app = $app
-    }
-    /**
-     * boot method.
-     * @returns {any}
-     */
-    boot() {
-
-    }
-    
-    /**
-     * register method.
-     * @returns {any}
-     */
-    register() {
-
-    }
-    
-    /**
-     * callBootingCallbacks method.
-     * @returns {any}
-     */
-    callBootingCallbacks() {
-
-    }
-    
-    /**
-     * callBootedCallbacks method.
-     * @returns {any}
-     */
-    callBootedCallbacks() {
-
+        this.$app = $app;
     }
 
     /**
-     * commands method.
-     * @param {*} $commands
-     * @returns {any}
+     * Boot the service provider.
      */
-    commands($commands: any) {
-        $commands = Array.isArray($commands) ? $commands : arguments
-        if ($commands.length) {
+    public boot(): void {
+    }
+
+    /**
+     * Register services with the container.
+     */
+    public register(): void {
+    }
+
+    /**
+     * Call booting callbacks.
+     */
+    public callBootingCallbacks(): void {
+    }
+
+    /**
+     * Call booted callbacks.
+     */
+    public callBootedCallbacks(): void {
+    }
+
+    /**
+     * Register console commands.
+     * @param $commands - Command class or list of command classes.
+     */
+    public commands($commands: any): void {
+        const commandList = Array.isArray($commands) ? $commands : Array.from(arguments);
+        if (commandList.length) {
             const Assistant = require('@ostro/console/application');
-            Assistant.addBootstraper(function($artisan) {
-                $artisan.resolveCommands($commands);
+            Assistant.addBootstraper(function ($artisan: any) {
+                $artisan.resolveCommands(commandList);
             });
         }
     }
-    
+
     /**
-     * provides method.
-     * @returns {any}
+     * Get provided services.
+     * @returns Array of provided service identifiers.
      */
-    provides() {
-        return []
-    }
-    
-    /**
-     * isDeferred method.
-     * @returns {any}
-     */
-    isDeferred() {
-        return false
+    public provides(): string[] {
+        return [];
     }
 
+    /**
+     * Determine if provider is deferred.
+     * @returns True if deferred, false otherwise.
+     */
+    public isDeferred(): boolean {
+        return false;
+    }
 }
-module.exports = ServiceProvider
+
+export = ServiceProvider;

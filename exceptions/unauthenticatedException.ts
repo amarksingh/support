@@ -2,15 +2,20 @@
  * Class UnauthenticatedException.
  */
 class UnauthenticatedException {
+    public name: string;
+    public statusCode: number;
+    public message: string;
+
     /**
      * Create a new instance.
-     * @param {*} message
+     * @param message - The error message.
      */
-    constructor(message: string) {
+    constructor(message?: string) {
         this.name = this.constructor.name;
         this.statusCode = 401;
         this.message = message || 'Unauthenticated';
         Error.captureStackTrace(this, this.constructor);
     }
 }
-module.exports = UnauthenticatedException
+
+export = UnauthenticatedException;
