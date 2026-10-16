@@ -280,7 +280,9 @@ export function app_url(): any {
 }
 
 export function collect(data?: any): any {
-	return require('./collection').collect(data);
+	const mod = require('./collection');
+	const Collection = mod.default || mod;
+	return Collection.collect(data);
 }
 
 export function mix(assetPath: string): any {
