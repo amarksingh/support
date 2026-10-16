@@ -18,4 +18,4 @@ class UnpossibleEntityException {
     }
 }
 
-export = UnpossibleEntityException;
+export default UnpossibleEntityException;

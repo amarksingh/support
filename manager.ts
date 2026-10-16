@@ -13,7 +13,6 @@ class Manager extends Macroable {
     public $config: any;
     public $customCreators: Record<string, Function>;
     public $drivers: Record<string, any>;
-    public $type?: string;
 
     /**
      * Create a new instance.
@@ -208,4 +207,4 @@ class Manager extends Macroable {
     }
 }
 
-export = Manager;
+export default Manager;

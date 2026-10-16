@@ -15,4 +15,4 @@ class AccessDeniedHttpException extends Error implements AccessDeniedHttpExcepti
     }
 }
 
-export = AccessDeniedHttpException;
+export default AccessDeniedHttpException;

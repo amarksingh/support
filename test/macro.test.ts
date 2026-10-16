@@ -1,4 +1,5 @@
-const MockContainer = require('../mockContainer');
+const _MockContainer = require('../mockContainer');
+const MockContainer = _MockContainer.default || _MockContainer;
 const { Macroable } = require('../macro');
 
 describe('MockContainer and Macroable', () => {

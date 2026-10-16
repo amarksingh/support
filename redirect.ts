@@ -15,4 +15,4 @@ class Redirect {
         return this.make(new RedirectResponse(), method)
     }
 }
-module.exports = Macroable(Redirect)
+export default Macroable(Redirect);

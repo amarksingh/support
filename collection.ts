@@ -571,4 +571,4 @@ class Collection<T = any> extends Macroable.extend(CollectionInterface) implemen
 
 }
 
-export = Collection;
+export default Collection;

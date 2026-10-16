@@ -242,4 +242,4 @@ class DateTime extends Date {
     }
 }
 
-export = DateTime;
+export default DateTime;

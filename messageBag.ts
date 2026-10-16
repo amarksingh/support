@@ -67,4 +67,4 @@ class MessageBag extends MessageBagContracts {
     }
 }
 
-export = MessageBag;
+export default MessageBag;

@@ -18,4 +18,4 @@ class UnauthenticatedException {
     }
 }
 
-export = UnauthenticatedException;
+export default UnauthenticatedException;

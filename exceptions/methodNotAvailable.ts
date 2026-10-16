@@ -19,4 +19,4 @@ class MethodNotAvailable extends MethodNotAvailableContract {
     }
 }
 
-export = MethodNotAvailable;
+export default MethodNotAvailable;

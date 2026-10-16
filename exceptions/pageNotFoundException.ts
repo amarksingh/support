@@ -21,4 +21,4 @@ class PageNotFoundException extends PageNotFoundExceptionContract {
     }
 }
 
-export = PageNotFoundException;
+export default PageNotFoundException;

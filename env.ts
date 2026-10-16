@@ -25,4 +25,4 @@ class Env {
     }
 }
 
-export = Env;
+export default Env;

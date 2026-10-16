@@ -19,4 +19,4 @@ class InvalidClassException extends InvalidClassExceptionContract {
     }
 }
 
-export = InvalidClassException;
+export default InvalidClassException;

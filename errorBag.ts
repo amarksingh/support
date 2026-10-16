@@ -59,4 +59,4 @@ class ErrorBag extends ErrorBagContract {
     }
 }
 
-export = ErrorBag;
+export default ErrorBag;

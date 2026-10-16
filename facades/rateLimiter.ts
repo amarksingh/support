@@ -1,5 +1,5 @@
-const Facade = require('./facade');
-const { Macroable } = require('../macro');
+import Facade from './facade';
+import { Macroable } from '../macro';
 /**
  * Class RateLimiter.
  */
@@ -14,4 +14,4 @@ class RateLimiter extends Facade {
         return require('@ostro/cache/rateLimiter');
     }
 }
-module.exports = Macroable(RateLimiter)
+export default Macroable(RateLimiter);

@@ -1,5 +1,5 @@
-const Facade = require('./facade')
-const { Macroable } = require('../macro')
+import Facade from './facade';
+import { Macroable } from '../macro';
 /**
  * Class validator.
  */
@@ -14,4 +14,4 @@ class validator extends Facade {
         return 'validation';
     }
 }
-module.exports = Macroable(validator)
+export default Macroable(validator);

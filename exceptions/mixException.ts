@@ -18,4 +18,4 @@ class MixException {
     }
 }
 
-export = MixException;
+export default MixException;

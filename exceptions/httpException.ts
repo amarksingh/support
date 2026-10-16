@@ -22,4 +22,4 @@ class HttpException extends HttpExceptionContract {
     }
 }
 
-export = HttpException;
+export default HttpException;

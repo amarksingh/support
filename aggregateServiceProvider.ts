@@ -53,4 +53,4 @@ class AggregateServiceProvider extends ServiceProvider {
     }
 }
 
-export = AggregateServiceProvider;
+export default AggregateServiceProvider;

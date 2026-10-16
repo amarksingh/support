@@ -29,4 +29,4 @@ class MockContainer {
     }
 }
 
-export = MockContainer;
+export default MockContainer;

@@ -18,4 +18,4 @@ class InvalidFacadeAccessor {
     }
 }
 
-export = InvalidFacadeAccessor;
+export default InvalidFacadeAccessor;

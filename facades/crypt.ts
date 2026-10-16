@@ -1,5 +1,5 @@
-const Facade = require('./facade')
-const { Macroable } = require('../macro')
+import Facade from './facade';
+import { Macroable } from '../macro';
 
 /**
  * Class Crypt.
@@ -15,4 +15,4 @@ class Crypt extends Facade {
         return 'encrypter';
     }
 }
-module.exports = Macroable(Crypt)
+export default Macroable(Crypt);

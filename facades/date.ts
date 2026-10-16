@@ -1,7 +1,7 @@
-const Facade = require('./facade')
-const { Macroable } = require('../macro')
-const DateFactory = require('../dateTime')
-const { isset } = require('../function')
+import Facade from './facade';
+import { Macroable } from '../macro';
+import DateFactory from '../dateTime';
+import { isset } from '../function';
 /**
  * Class DateTime.
  */
@@ -40,4 +40,4 @@ class DateTime extends Facade {
         return super.resolveFacadeInstance($name);
     }
 }
-module.exports = Macroable(DateTime)
+export default Macroable(DateTime);

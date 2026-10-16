@@ -19,4 +19,4 @@ class LogicException extends Error {
     }
 }
 
-export = LogicException;
+export default LogicException;

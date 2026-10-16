@@ -21,4 +21,4 @@ class InvalidArgumentException extends InvalidArgumentExceptionContract {
     }
 }
 
-export = InvalidArgumentException;
+export default InvalidArgumentException;

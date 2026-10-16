@@ -1,5 +1,5 @@
-const Facade = require('./facade')
-const { Macroable } = require('../macro')
+import Facade from './facade';
+import { Macroable } from '../macro';
 /**
  * Class Storage.
  */
@@ -14,4 +14,4 @@ class Storage extends Facade {
         return 'filesystem';
     }
 }
-module.exports = Macroable(Storage)
+export default Macroable(Storage);

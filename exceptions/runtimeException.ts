@@ -19,4 +19,4 @@ class RuntimeException extends RuntimeExceptionContract {
     }
 }
 
-export = RuntimeException;
+export default RuntimeException;

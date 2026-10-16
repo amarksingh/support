@@ -1,5 +1,7 @@
-const Manager = require('../manager');
-const InvalidArgumentException = require('../exceptions/invalidArgumentException');
+const _Manager = require('../manager');
+const Manager = _Manager.default || _Manager;
+const _InvalidArgumentException = require('../exceptions/invalidArgumentException');
+const InvalidArgumentException = _InvalidArgumentException.default || _InvalidArgumentException;
 
 describe('Manager', () => {
     class TestManager extends Manager {

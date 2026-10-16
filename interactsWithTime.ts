@@ -56,4 +56,4 @@ class InteractsWithTime {
     }
 }
 
-export = InteractsWithTime;
+export default InteractsWithTime;

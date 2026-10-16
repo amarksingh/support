@@ -14,4 +14,4 @@ class DeferrableProvider extends ServiceProvider {
     }
 }
 
-export = DeferrableProvider;
+export default DeferrableProvider;

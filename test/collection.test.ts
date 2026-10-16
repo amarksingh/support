@@ -1,4 +1,5 @@
-const Collection = require('../collection');
+const _Collection = require('../collection');
+const Collection = _Collection.default || _Collection;
 
 describe('Collection', () => {
     test('make, collect, constructor, length, iterator', () => {

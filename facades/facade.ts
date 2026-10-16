@@ -1,7 +1,7 @@
-const InvalidFacadeAccessor = require('./exceptions/invalidFacadeAccessor');
-const RuntimeException = require('../exceptions/runtimeException');
-const { isset } = require('../function');
-const { ProxyHandler } = require('../macro');
+import InvalidFacadeAccessor from './exceptions/invalidFacadeAccessor';
+import RuntimeException from '../exceptions/runtimeException';
+import { isset } from '../function';
+import { ProxyHandler } from '../macro';
 
 /**
  * Class Facade.
@@ -153,4 +153,4 @@ class Facade {
     }
 
 }
-module.exports = Facade;
+export default Facade;

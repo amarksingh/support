@@ -67,4 +67,4 @@ class ServiceProvider {
     }
 }
 
-export = ServiceProvider;
+export default ServiceProvider;

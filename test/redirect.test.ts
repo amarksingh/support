@@ -1,4 +1,5 @@
-const Redirect = require('../redirect');
+const _Redirect = require('../redirect');
+const Redirect = _Redirect.default || _Redirect;
 const RedirectResponse = require('@ostro/http/redirectResponse');
 
 describe('Redirect', () => {

@@ -182,4 +182,4 @@ class ConfigurationUrlParser {
     }
 }
 
-export = ConfigurationUrlParser;
+export default ConfigurationUrlParser;

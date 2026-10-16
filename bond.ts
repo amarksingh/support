@@ -64,4 +64,4 @@ function bond<T extends Record<string, any>>(
     return self;
 }
 
-export = bond;
+export default bond;

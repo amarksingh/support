@@ -30,4 +30,4 @@ class Input extends InputContracts {
     }
 }
 
-export = Input;
+export default Input;
