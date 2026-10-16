@@ -1,5 +1,5 @@
-const RedirectResponse = require('@ostro/http/redirectResponse')
-const { Macroable } = require('./macro')
+import RedirectResponse from '@ostro/http/redirectResponse';
+import { Macroable } from './macro';
 /**
  * Class Redirect.
  */

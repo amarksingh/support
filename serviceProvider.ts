@@ -43,7 +43,8 @@ class ServiceProvider {
     public commands($commands: any): void {
         const commandList = Array.isArray($commands) ? $commands : Array.from(arguments);
         if (commandList.length) {
-            const Assistant = require('@ostro/console/application');
+            const assistantModule = require('@ostro/console/application');
+            const Assistant = assistantModule?.default || assistantModule;
             Assistant.addBootstraper(function ($artisan: any) {
                 $artisan.resolveCommands(commandList);
             });

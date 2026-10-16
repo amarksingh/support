@@ -1,6 +1,7 @@
 const _Redirect = require('../redirect');
 const Redirect = _Redirect.default || _Redirect;
-const RedirectResponse = require('@ostro/http/redirectResponse');
+const _RedirectResponse = require('@ostro/http/redirectResponse');
+const RedirectResponse = _RedirectResponse.default || _RedirectResponse;
 
 describe('Redirect', () => {
     test('__get proxies calls to RedirectResponse instance', () => {
