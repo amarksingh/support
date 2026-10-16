@@ -4,6 +4,8 @@ import InvalidClassExceptionContract from '@ostro/contracts/exception/invalidDat
  * Class InvalidClassException.
  */
 class InvalidClassException extends InvalidClassExceptionContract {
+    public declare name: string;
+    public declare message: string;
     public statusCode: number;
 
     /**

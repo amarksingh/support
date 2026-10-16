@@ -208,7 +208,7 @@ function macro(clazz: any): void {
             callback;
         this.$_getters[name] = wrappedCallback;
         Object.defineProperty(this.prototype, name, {
-            get: wrappedCallback,
+            get: wrappedCallback as () => any,
             configurable: true,
             enumerable: true,
         });

@@ -60,7 +60,7 @@ class Facade {
      * @static
      * @returns {any}
      */
-    static getFacadeAccessor() {
+    static getFacadeAccessor(): string {
         throw new RuntimeException('Facade does not implement getFacadeAccessor method.');
     }
 

@@ -14,7 +14,7 @@ class Application extends Facade {
      * @returns {any}
      */
     static __get($target: Record<string, any>, $method: string) {
-        return this.make($target.$app,$method);
+        return (this as any).make($target.$app, $method);
     }
 }
 

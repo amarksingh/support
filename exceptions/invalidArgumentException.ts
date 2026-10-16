@@ -4,6 +4,8 @@ import InvalidArgumentExceptionContract from '@ostro/contracts/exception/invalid
  * Class InvalidArgumentException.
  */
 class InvalidArgumentException extends InvalidArgumentExceptionContract {
+    public declare name: string;
+    public declare message: string;
     public code: string;
     public statusCode: number;
 

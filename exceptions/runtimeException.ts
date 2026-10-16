@@ -4,6 +4,8 @@ import RuntimeExceptionContract from '@ostro/contracts/exception/runtimeExceptio
  * Class RuntimeException.
  */
 class RuntimeException extends RuntimeExceptionContract {
+    public declare name: string;
+    public declare message: string;
     public statusCode: number;
 
     /**

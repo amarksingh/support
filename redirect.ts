@@ -12,7 +12,7 @@ class Redirect {
      * @returns {any}
      */
     static __get(target: Record<string, any>, method: string) {
-        return this.make(new RedirectResponse(), method)
+        return (this as any).make(new RedirectResponse(undefined), method);
     }
 }
 export default Macroable(Redirect);

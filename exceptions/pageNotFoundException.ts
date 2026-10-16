@@ -4,6 +4,8 @@ import PageNotFoundExceptionContract from '@ostro/contracts/http/pageNotFoundExc
  * Class PageNotFoundException.
  */
 class PageNotFoundException extends PageNotFoundExceptionContract {
+    public declare name: string;
+    public declare message: string;
     public error: any;
     public statusCode: number;
 

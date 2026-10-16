@@ -61,7 +61,7 @@ class DateTime extends Date {
      * @param date - Optional date or DateTime instance.
      */
     constructor(date?: any) {
-        super(...(arguments as any));
+        super(date);
         const ctor = this.constructor as typeof DateTime;
 
         if (date instanceof (this.constructor as any) || date instanceof LuxonDateTime) {

@@ -8,19 +8,19 @@ declare global {
     }
 }
 
-Object.filter = function (obj: Record<string, any>, cb?: (val: any) => any) {
+Object.filter = function <T extends Record<string, any>>(obj: T, cb?: (val: any) => any): T {
     const keys = Object.keys(obj);
     for (const key of keys) {
         const data = typeof cb == 'function' ? cb(obj[key]) : obj[key];
         if (!data) {
-            delete obj[key];
+            delete (obj as any)[key];
         }
     }
     return obj;
 };
 
-Object.except = function (obj: Record<string, any>, keys: string[]) {
-    const target: Record<string, any> = {};
+Object.except = function <T extends Record<string, any>>(obj: T, keys: string[]): Partial<T> {
+    const target: Partial<T> = {};
     for (const i in obj) {
         if (keys.indexOf(i) >= 0) continue;
         if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;

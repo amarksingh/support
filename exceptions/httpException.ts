@@ -4,6 +4,8 @@ import HttpExceptionContract from '@ostro/contracts/http/httpException';
  * Class HttpException.
  */
 class HttpException extends HttpExceptionContract {
+    public declare name: string;
+    public declare message: string;
     public errors: any;
     public status: number | boolean;
 

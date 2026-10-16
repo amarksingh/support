@@ -2,7 +2,24 @@
   "name": "@ostro/support",
   "version": "1.3.0",
   "description": "Support for OstroJS",
+  "main": "build/function.js",
+  "types": "build/function.d.ts",
+  "files": [
+    "build"
+  ],
+  "exports": {
+    ".": {
+      "types": "./build/function.d.ts",
+      "default": "./build/function.js"
+    },
+    "./*": {
+      "types": "./build/*.d.ts",
+      "default": "./build/*.js"
+    }
+  },
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "npm run build",
     "test": "npx c8 npx jest"
   },
   "dependencies": {

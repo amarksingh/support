@@ -110,7 +110,7 @@ class Collection<T = any> extends Macroable.extend(CollectionInterface) implemen
 	 * @param {*} value
 	 * @returns {any}
 	 */
-	where(clause, value) {
+	where(clause: any, value?: any) {
 		clause = typeof clause == 'string' ? { [clause]: value } : clause;
 		return this[kUpdateData](lodash.filter(this.$items, clause))
 	}
@@ -119,8 +119,8 @@ class Collection<T = any> extends Macroable.extend(CollectionInterface) implemen
 	 * only method.
 	 * @returns {any}
 	 */
-	only() {
-		return this.index(...arguments)
+	only(...keys: any[]) {
+		return this.index(...keys)
 	}
 
 	/**
@@ -161,8 +161,8 @@ class Collection<T = any> extends Macroable.extend(CollectionInterface) implemen
 	 * @param {*} clause
 	 * @returns {any}
 	 */
-	index(clause) {
-		return this[kUpdateData](lodash[((typeof clause == 'function') ? 'pickBy' : 'pick')](this.$items, clause))
+	index(...clause: any[]) {
+		return this[kUpdateData](lodash[((typeof clause[0] == 'function') ? 'pickBy' : 'pick')](this.$items, clause.length === 1 ? clause[0] : clause))
 	}
 
 	/**
@@ -363,8 +363,8 @@ class Collection<T = any> extends Macroable.extend(CollectionInterface) implemen
 	 * @param {*} second
 	 * @returns {any}
 	 */
-	pluck(first, second) {
-		let results = second ? {} : [];
+	pluck(first: any, second?: any) {
+		let results: any = second ? {} : [];
 		for (let data of this.$items) {
 			if (second) {
 				results[lodash.get(data, second)] = lodash.get(data, first)
@@ -555,8 +555,8 @@ class Collection<T = any> extends Macroable.extend(CollectionInterface) implemen
 
 		};
 	}
-	[kUpdateData](data) {
-		return new this.constructor(data)
+	[kUpdateData](data: any) {
+		return new (this.constructor as any)(data)
 	}
 
 	/**

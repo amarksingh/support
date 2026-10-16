@@ -4,6 +4,8 @@ import MethodNotAvailableContract from '@ostro/contracts/http/methodNotAvailable
  * Class MethodNotAvailable.
  */
 class MethodNotAvailable extends MethodNotAvailableContract {
+    public declare name: string;
+    public declare message: string;
     public statusCode: number;
 
     /**
