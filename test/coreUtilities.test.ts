@@ -3,6 +3,7 @@ import { compose, errors } from '../compose';
 import ConfigurationUrlParser from '../configurationUrlParser';
 import { plural, singular } from '../pluralize';
 import * as Str from '../string';
+import { base_path } from '../function';
 
 describe('bond', () => {
     class Base {
@@ -308,5 +309,45 @@ describe('Str (string.js)', () => {
         expect(Str.includes('hello world', 'world')).toBe(true);
         expect(Str.contains('hello world', 'world')).toBe(true);
         expect(Str.pluralStudly('user_account')).toBe('userAccounts');
+    });
+
+    test('base_path supports standard relative paths and ~/ alias', () => {
+        const path = require('path');
+        const standard = base_path('app/models/user');
+        const tilde = base_path('~/app/models/user');
+        expect(standard).toBe(path.resolve(process.cwd(), 'app/models/user'));
+        expect(tilde).toBe(standard);
+    });
+
+    test('helpers ~/ module resolution resolves package.json, build path fallback, and global.$basePath', () => {
+        const path = require('path');
+        const fs = require('fs');
+        const Module = require('module');
+        require('../helpers');
+        
+        // Resolve direct file
+        const resolved = Module._resolveFilename('~/package.json', module, false);
+        expect(resolved).toBe(path.resolve(process.cwd(), 'package.json'));
+
+        // Test build path branch
+        const buildDir = path.resolve(process.cwd(), 'build');
+        const testFile = path.resolve(buildDir, 'temp-resolve-test.js');
+        if (!fs.existsSync(buildDir)) fs.mkdirSync(buildDir, { recursive: true });
+        fs.writeFileSync(testFile, 'module.exports = { ok: true };');
+        try {
+            const resolvedBuild = Module._resolveFilename('~/temp-resolve-test', module, false);
+            expect(resolvedBuild).toBe(testFile);
+        } finally {
+            if (fs.existsSync(testFile)) fs.unlinkSync(testFile);
+        }
+
+        // Test with global.$basePath set
+        (global as any).$basePath = path.resolve(process.cwd());
+        const resolvedWithGlobal = Module._resolveFilename('~/package.json', module, false);
+        expect(resolvedWithGlobal).toBe(path.resolve(process.cwd(), 'package.json'));
+        delete (global as any).$basePath;
+
+        // Test non-existent path throws
+        expect(() => Module._resolveFilename('~/non-existent-xyz', module, false)).toThrow(/non-existent-xyz/);
     });
 });

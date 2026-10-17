@@ -252,7 +252,8 @@ export function config(arg?: any, defaultValue?: any): any {
 }
 
 export function base_path(...args: string[]): string {
-	return nodePath.normalize(nodePath.join(process.cwd(), nodePath.join('/', ...args)));
+	const sanitized = args.map(arg => typeof arg === 'string' && arg.startsWith('~/') ? arg.slice(2) : arg);
+	return nodePath.normalize(nodePath.join(process.cwd(), nodePath.join('/', ...sanitized)));
 }
 
 export function storage_path(...args: string[]): string {

@@ -95,6 +95,7 @@ describe('Collection', () => {
         expect(c.pull(1, 9).all()).toEqual([5, 3]);
         expect(Collection.make(['a', 'b', 'c']).join('-').all()).toBe('a-b-c');
         expect(Collection.make([]).isEmpty().all()).toBe(true);
+        expect(Collection.make([1]).isNotEmpty().all()).toBe(true);
 
         const c2 = Collection.make([1, 2, 3]);
         expect(c2.intersection([2, 3, 4]).all()).toEqual([2, 3]);

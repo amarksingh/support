@@ -3,7 +3,8 @@ import { implement } from './function';
 const dontAllowMethodTypeOf = ['symbol'];
 const dontAllowMethodMethod = [
     'inspect', 'then', 'catch', 'finaly', 'toJSON',
-    'toString', 'valueOf', 'asymmetricMatch', 'nodeType', '$$typeof'
+    'toString', 'valueOf', 'asymmetricMatch', 'nodeType', '$$typeof',
+    'default', '__esModule'
 ];
 
 export interface ProxyHandlerType extends ProxyHandler<any> {

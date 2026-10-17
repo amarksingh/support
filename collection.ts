@@ -171,7 +171,7 @@ class Collection<T = any> extends Macroable.extend(CollectionInterface) implemen
 	 * @param {*} init
 	 * @returns {any}
 	 */
-	reduce(clause, init = 0) {
+	reduce(clause: any, init: any = 0): any {
 		return this[kUpdateData](lodash.reduce(this.$items, clause, init))
 	}
 
@@ -327,6 +327,14 @@ class Collection<T = any> extends Macroable.extend(CollectionInterface) implemen
 	 */
 	isEmpty() {
 		return this[kUpdateData](lodash.isEmpty(this.$items))
+	}
+
+	/**
+	 * isNotEmpty method.
+	 * @returns {any}
+	 */
+	isNotEmpty() {
+		return this[kUpdateData](!lodash.isEmpty(this.$items))
 	}
 
 	/**
