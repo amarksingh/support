@@ -1,14 +1,14 @@
-import AccessDeniedHttpException from '../exceptions/accessDeniedHttpException';
-import HttpException from '../exceptions/httpException';
-import InvalidArgumentException from '../exceptions/invalidArgumentException';
-import InvalidDataTypeException from '../exceptions/invalidDataTypeException';
-import LogicException from '../exceptions/logicException';
-import MethodNotAvailable from '../exceptions/methodNotAvailable';
-import MixException from '../exceptions/mixException';
-import PageNotFoundException from '../exceptions/pageNotFoundException';
-import RuntimeException from '../exceptions/runtimeException';
-import UnauthenticatedException from '../exceptions/unauthenticatedException';
-import UnpossibleEntityException from '../exceptions/unpossibleEntityException';
+import AccessDeniedHttpException from '../src/exceptions/accessDeniedHttpException';
+import HttpException from '../src/exceptions/httpException';
+import InvalidArgumentException from '../src/exceptions/invalidArgumentException';
+import InvalidDataTypeException from '../src/exceptions/invalidDataTypeException';
+import LogicException from '../src/exceptions/logicException';
+import MethodNotAvailable from '../src/exceptions/methodNotAvailable';
+import MixException from '../src/exceptions/mixException';
+import PageNotFoundException from '../src/exceptions/pageNotFoundException';
+import RuntimeException from '../src/exceptions/runtimeException';
+import UnauthenticatedException from '../src/exceptions/unauthenticatedException';
+import UnpossibleEntityException from '../src/exceptions/unpossibleEntityException';
 
 describe('exceptions', () => {
     test('AccessDeniedHttpException sets name and message', () => {

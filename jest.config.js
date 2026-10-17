@@ -22,10 +22,11 @@ module.exports = {
         "clover"
     ],
     "collectCoverageFrom": [
-        "<rootDir>/**/*.ts",
+        "<rootDir>/src/**/*.ts",
         "!<rootDir>/node_modules/**",
         "!<rootDir>/test/**",
         "!<rootDir>/coverage/**",
+        "!<rootDir>/build/**",
         "!<rootDir>/jest.config.js"
     ]
 };

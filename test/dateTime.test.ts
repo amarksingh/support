@@ -1,6 +1,6 @@
-import DateTime from '../dateTime';
+import DateTime from '../src/dateTime';
 import { DateTime as LuxonDateTime } from 'luxon';
-import InvalidArgumentException from '../exceptions/invalidArgumentException';
+import InvalidArgumentException from '../src/exceptions/invalidArgumentException';
 
 describe('DateTime', () => {
     afterEach(() => {

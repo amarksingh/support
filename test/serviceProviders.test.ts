@@ -1,6 +1,6 @@
-import ServiceProvider from '../serviceProvider';
-import DeferrableProvider from '../deferrableProvider';
-import AggregateServiceProvider from '../aggregateServiceProvider';
+import ServiceProvider from '../src/serviceProvider';
+import DeferrableProvider from '../src/deferrableProvider';
+import AggregateServiceProvider from '../src/aggregateServiceProvider';
 
 describe('Service Providers', () => {
     describe('ServiceProvider', () => {

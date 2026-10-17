@@ -1,4 +1,4 @@
-import { groupBy, last, intersection, shuffle, unique, diff, difference, wrap } from '../array';
+import { groupBy, last, intersection, shuffle, unique, diff, difference, wrap } from '../src/array';
 
 describe('array', () => {
     test('groupBy groups elements by function or property name', () => {

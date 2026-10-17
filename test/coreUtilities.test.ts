@@ -1,9 +1,9 @@
-import bond from '../bond';
-import { compose, errors } from '../compose';
-import ConfigurationUrlParser from '../configurationUrlParser';
-import { plural, singular } from '../pluralize';
-import * as Str from '../string';
-import { base_path } from '../function';
+import bond from '../src/bond';
+import { compose, errors } from '../src/compose';
+import ConfigurationUrlParser from '../src/configurationUrlParser';
+import { plural, singular } from '../src/pluralize';
+import * as Str from '../src/string';
+import { base_path } from '../src/function';
 
 describe('bond', () => {
     class Base {
@@ -323,7 +323,7 @@ describe('Str (string.js)', () => {
         const path = require('path');
         const fs = require('fs');
         const Module = require('module');
-        require('../helpers');
+        require('../src/helpers');
         
         // Resolve direct file
         const resolved = Module._resolveFilename('~/package.json', module, false);

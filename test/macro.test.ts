@@ -1,6 +1,6 @@
-const _MockContainer = require('../mockContainer');
+const _MockContainer = require('../src/mockContainer');
 const MockContainer = _MockContainer.default || _MockContainer;
-const { Macroable } = require('../macro');
+const { Macroable } = require('../src/macro');
 
 describe('MockContainer and Macroable', () => {
     describe('MockContainer', () => {
@@ -147,7 +147,7 @@ describe('MockContainer and Macroable', () => {
         });
 
         test('ProxyHandler make, call, and apply methods', () => {
-            const { ProxyHandler } = require('../macro');
+            const { ProxyHandler } = require('../src/macro');
             const targetObj = {
                 greet(name) {
                     return `Hi ${name}`;

@@ -1,6 +1,6 @@
-const _Manager = require('../manager');
+const _Manager = require('../src/manager');
 const Manager = _Manager.default || _Manager;
-const _InvalidArgumentException = require('../exceptions/invalidArgumentException');
+const _InvalidArgumentException = require('../src/exceptions/invalidArgumentException');
 const InvalidArgumentException = _InvalidArgumentException.default || _InvalidArgumentException;
 
 describe('Manager', () => {

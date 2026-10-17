@@ -1,4 +1,4 @@
-const _Collection = require('../collection');
+const _Collection = require('../src/collection');
 const Collection = _Collection.default || _Collection;
 
 describe('Collection', () => {

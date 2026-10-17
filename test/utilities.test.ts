@@ -1,10 +1,10 @@
-import '../object';
-import Env from '../env';
-import Input from '../input';
-import ErrorBag from '../errorBag';
-import MessageBag from '../messageBag';
-import InteractsWithTime from '../interactsWithTime';
-import DateTime from '../dateTime';
+import '../src/object';
+import Env from '../src/env';
+import Input from '../src/input';
+import ErrorBag from '../src/errorBag';
+import MessageBag from '../src/messageBag';
+import InteractsWithTime from '../src/interactsWithTime';
+import DateTime from '../src/dateTime';
 
 describe('Utility classes (env, input, errorBag, messageBag, object, interactsWithTime)', () => {
     describe('Env', () => {
